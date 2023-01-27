@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{asset('assets/css/inscription.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<header id="head" class="secondary"></header>
+<style>
+    .secondary{
+        background: none !important;
+    }
+
+</style>
+
+<div class="container" style="background: #ddddddb3; border-radius:15px; padding: 15px; width: 50vw;">
+    
+    
+        <div class="text-center">
+            <h1>Inscription</h1>
+            <p>
+                Lorem ipsum dolor sit amet, adipisicing elit. Quo nulla quibusdam cum doloremque incidunt nemo sunt a tenetur omnis odio. <br>
+                <a href="{{ path("app_login")}}">login</a>
+            </p>
+        </div>
+    
+    {{ form_start(registrationForm) }}
+    <div class="row">
+        <div class="col-md-12">{{ form_row(registrationForm.email) }} </div>
+        <div class="col-md-12">  {{ form_row(registrationForm.lastname) }}</div>
+        <div class="col-md-12">{{ form_row(registrationForm.firstname) }} </div>
+        <div class="col-md-6 "> {{ form_row(registrationForm.plainPassword.first)}}</div>
+        <div class="col-md-6 "> {{ form_row(registrationForm.plainPassword.second)}}</div>
+        <div class="col-md-12">  {{ form_row(registrationForm.gender) }}</div>
+
+            
+    </div>
+        
+       
+        
+        
+        
+       
+        
+        <button type="submit" class="btn" style="background: #025908; float: right; margin-bottom:5vh; color: #FFFFFF;">Register</button>
+    {{ form_end(registrationForm) }}
+
+
+</div>
+    
+{% endblock %}

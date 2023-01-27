@@ -1,0 +1,7 @@
+.home{
+    background-image: url(../images/foret.jpg) !important;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}

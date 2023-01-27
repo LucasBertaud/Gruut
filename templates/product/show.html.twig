@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block css %}
+	<link rel="stylesheet" href="{{ asset("assets/css/product.css") }}">
+{% endblock %}
+
+{% block title %}Nos Produits
+{% endblock %}
+
+{% block content %}
+	<br>
+	<br>
+	<br>
+	<br>
+
+	<div class="row">
+<div class="col-md-4 flexbyme2">
+
+
+			<a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img class="align-self-center img" src="{{ asset('assets/images/')}}{{product.illustration}} " alt="{{ product.name }}" class="img-fluid" width="300px"></a>
+		</div>
+		<div class="col-md-7" style="height: 300px">
+
+			<h1>{{product.name}}</h1>
+			<span class="product-subtitle">
+			<h3>{{ product.subtitle }}</h3>	
+			</span>
+            <hr>
+			<div class="flexbyme"></div>
+			<p>{{ product.description }}</p>
+			<h3 style="font-weight: bolder" class="product-price">
+				<span style="text-decoration: underline">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
+				<a href=""></a>
+			</h3>
+			 {% if  product.stock > 0 %}
+            <a class="btn-success btn" href="{{path("cart_add", {"id" : product.id})}}">Ajouter au panier</a>
+			{% else %}
+				<p  class="text-danger">Produit temporairement en rupture de stock</p>
+			{% endif %}
+			
+		</div>
+
+
+	</div>
+
+
+{% endblock %}

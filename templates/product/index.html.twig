@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Produits
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ asset("assets/css/product.css") }}">
+{% endblock %}
+
+{% block content %}
+<header id="head" class="secondary"></header>
+
+<style>
+    .secondary{
+        background: none !important;
+    }
+
+</style>
+	
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<h1 class="text-center">Nos  produits pour le {{categories.name}} </h1>
+			<div class="row">
+ {% for product in categories.products %} 
+
+					<div class="col-md-4" style="height: 350px">
+<a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px"></a>
+
+
+						<div class="describe" style="height:50px;">
+						<h4>{{product.name}}</h4>
+						<span class="product-subtitle">
+							{{ product.subtitle }}
+						</span>
+					</div>
+						<div class="flexbyme ">
+							<h3 style="font-weight: bolder" class="product-price">
+								<span style="text-decoration: underline">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
+								<a href=""><img src="{{asset("assets/images/group12.png")}}" alt="commander"></a>
+							</h3>
+						</div>
+
+					</div>
+
+
+				{% endfor %} 
+			</div>
+		</div>
+	</div>
+{% endblock %}

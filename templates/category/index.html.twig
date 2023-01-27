@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégories
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ asset("assets/css/product.css") }}">
+{% endblock %}
+
+{% block content %}
+
+	<style>
+
+		img {
+			border-radius: 24px;
+			box-shadow: 0 0 25px #777777;
+		}
+
+		img:hover {
+			-ms-transform: scale(1.1); /* IE 9 */
+			-webkit-transform: scale(1.1); /* Safari 3-8 */
+			transform: scale(1.1);
+		}
+
+		.navbar-brand img {
+			border-radius: 0;
+			box-shadow: none;
+		}
+
+		#shopping_cart {
+			border-radius: 0;
+			box-shadow: none;
+		}
+		
+	</style>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<h1 class="text-center">Nos articles par catégories</h1>
+			<br>
+			<div class="row">
+				{% for categorie in categories %}
+
+					<div class="col-md-4" style="height: 350px">
+						<p>{{categorie.name}}</p><br>
+						 <a href="{{path("category_list", { 'slug' : categorie.slug } )}}"><img src="{{asset('assets/images/')}}{{categorie.illustration}}" alt="{{categorie.name}}" class="" width="250px" height="250px"></a> 
+					</div>
+
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

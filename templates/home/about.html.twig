@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block test %}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{asset('assets/css/about.css')}}">
+{% endblock %}
+
+{% block content %}
+<header id="head" class="secondary"></header>
+
+<style>
+    .secondary{
+        background: none !important;
+    }
+
+</style>
+
+<div class="container">
+<div class="about text-center px-2 " style="background: #dddddd9e; border-radius: 15px;">
+<br>
+
+<h2>Qui sommes nous ?</h2>
+<h3 style="margin-left:2vw; margin-right:2vw; font-family: Roboto Condensed;">
+    Nous sommes une entreprise de menuiserie, Gruut, a été créée il y a 25 ans avec pour objectif de fournir des solutions de qualité en matière de menuiserie à nos clients. Nous sommes spécialisés dans la fabrication et l'installation de fenêtres, portes, escaliers, placards et meubles sur mesure.
+    <br>
+    <br>
+Nous utilisons des matériaux de qualité supérieure et des techniques de fabrication modernes pour garantir une finition impeccable et une durabilité à long terme. Nous nous adaptons à vos besoins et à votre budget pour créer des solutions uniques qui amélioreront l'esthétique et l'efficacité énergétique de votre maison.
+Notre équipe est composée de professionnels expérimentés et qualifiés, qui sont passionnés par leur métier et mettent tout en œuvre pour satisfaire les besoins de nos clients. Nous sommes fiers de notre excellent service à la clientèle et de la qualité de notre travail. 
+    <br>
+    <br>
+Nous offrons également des services de rénovation pour mettre à jour vos espaces existants. Nous sommes certifiés et garantissons la qualité de nos produits et services. Nous sommes fiers de notre engagement envers l'environnement et utilisons des matériaux écologiques pour la fabrication de nos produits.
+N'hésitez pas à nous contacter pour toute demande de renseignements ou pour demander un devis. Nous serions ravis de vous aider à améliorer votre maison avec nos solutions de menuiserie sur mesure. <br>
+
+
+</h3>
+<br>
+
+</div>
+</div>
+
+
+
+{% endblock %}

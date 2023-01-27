@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block test %}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{asset('assets/css/contact.css')}}">
+{% endblock %}
+
+
+{% block content %}
+
+<header id="head" class="secondary"></header>
+
+<style>
+    .secondary{
+        background: none !important;
+    }
+
+</style>
+<div class="container">
+    <div class="row">
+        <div class="infos col-sm-6">
+            <div class="contact-infos" style="background: #025908b3; border-radius:15px; color: #FFFFFF;">
+                <h2>Nos inforùations</h2><br>
+                <span>
+                    <img src="" alt="">
+                    <h3>Appeler nous</h3><br>
+                    <small>05-06-61-46-87</small>
+                </span>
+                <span>
+                    <img src="" alt="">
+                    <h3>Emplacement</h3><br>
+                    <small>05 rue de la bienvenue</small>
+                </span>
+                <span>
+                    <img src="" alt="">
+                    <h3>Mail</h3><br>
+                    <small>contact@gruut.com</small>
+                </span>
+            </div>
+        </div>
+        <div class="infos2 col-sm-6" style="margin-top: 5vh;">
+            <div class="contact-infos2" style="background: #ddddddb3; border-radius:15px">
+                <h2>Nos inforùations</h2><br>
+                <span>
+                    <img src="" alt="">
+                    <h3>Appeler nous</h3><br>
+                    <small>05-06-61-46-87</small>
+                </span>
+                <span>
+                    <img src="" alt="">
+                    <h3>Emplacement</h3><br>
+                    <small>05 rue de la bienvenue</small>
+                </span>
+                <span>
+                    <img src="" alt="">
+                    <h3>Mail</h3><br>
+                    <small>contact@gruut.com</small>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

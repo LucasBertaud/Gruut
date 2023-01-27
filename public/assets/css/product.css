@@ -1,0 +1,14 @@
+.flexbyme {
+    /* display: flex;
+    position: absolute;
+    bottom: 0; */
+}
+
+.flexbyme2{
+    display: flex;
+    justify-content: center;
+}
+
+.img{
+    margin-top: 30px;
+}
