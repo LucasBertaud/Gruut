@@ -19,7 +19,7 @@
 	
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<h1 class="text-center">Nos  produits pour le {{categories.name}} </h1>
+			<h1 class="text-center">Catégorie <br>{{categories.name}} </h1>
 			<div class="row">
  {% for product in categories.products %} 
 
@@ -36,7 +36,12 @@
 						<div class="flexbyme ">
 							<h3 style="font-weight: bolder" class="product-price">
 								<span style="text-decoration: underline">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
-								<a href=""><img src="{{asset("assets/images/group12.png")}}" alt="commander"></a>
+{% if  product.stock > 0 %}
+								<a href="{{path("cart_add", {"id" : product.id})}}"><img src="{{asset("assets/images/group12.png")}}" alt="commander"></a>
+{% else %}
+<p class="text-danger">Produit temporairement en rupture de stock</p>
+
+{% endif %}
 							</h3>
 						</div>
 

@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{asset('assets/css/profile.css')}}">
+{% endblock %}
+
+{% block content %}
+
+	<header id="head" class="secondary"></header>
+	<style>
+		.secondary {
+			background: none !important;
+		}
+	</style>
+	<div class="row">
+		<div class="col-md-3 text-center" style="background-color: #EDEDED; border-right: 2px solid #898989">
+			<div class="left-profile-container">
+				<img src="{{ asset("assets/images/profil_img.png") }}" alt="">
+				<h1 class="profileName">{{user.firstname}}
+					{{user.lastname}}</h1>
+			</div>
+			<h3 class="profileDiv">Compte</h3>
+			<br>
+			<i class="fa-regular fa-id-badge"></i>
+			<a href="{{path("profile_index")}}">Votre profil</a>
+			<br>
+			<i class="fa-solid fa-box"></i>
+			<a href="">Vos adresses</a>
+
+
+			<h3 class="profileDiv">Achats</h3>
+			<i class="fa-solid fa-basket-shopping"></i>
+			<p>Commandes et suivis</p>
+			<i class="fa-solid fa-file-invoice"></i>
+			<p>Factures</p>
+
+			<div class="profileDiv">
+				<i class="fa-solid fa-power-off"></i>
+				<p>Se déconnecter</p>
+			</div>
+		</div>
+
+		<div class="col-md-9 text-center">
+
+			<h1>Vos adresses</h1>
+<a href="{{path("address_index")}}">Ajouter une adresse</a> <br> <br>
+			{% for addres in address %}
+
+				<div class="panel panel-default col-md-6">
+					<div class="panel-heading">{{addres.name}}</div>
+					<div class="panel-body">{{addres.firstname}}
+						{{addres.lastname}}
+						{% if addres.company != null %}
+							{{addres.company}}
+							{% else %}
+						{% endif %}
+						{{addres.address}}
+						{{addres.postal}}
+						{{addres.city}}</div>
+
+
+					<div class="panel-footer">{{addres.country}}
+						{{addres.phone}}</div>
+<a href="{{path("address_modify", {'id' : addres.id} )}}">Modifier</a>
+<a href="{{path("address_delete", {'id' : addres.id} )}}">
+	<button>Supprimer</button>
+</a>
+
+				</div>
+			{% endfor %}
+
+
+			
+
+		</div>
+	</div>
+{% endblock %}

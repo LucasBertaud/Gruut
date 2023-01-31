@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil
+{% endblock %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{asset('assets/css/profile.css')}}">
+{% endblock %}
+
+{% block content %}
+
+	<header id="head" class="secondary"></header>
+	<style>
+		.secondary {
+			background: none !important;
+		}
+	</style>
+	<div class="row">
+		<div class="col-md-3 text-center" style="background-color: #EDEDED; border-right: 2px solid #898989">
+			<div class="left-profile-container">
+				<img src="{{ asset("assets/images/profil_img.png") }}" alt="">
+				<h1 class="profileName">{{user.firstname}}
+					{{user.lastname}}</h1>
+			</div>
+			<h3 class="profileDiv">Compte</h3>
+			<br>
+			<i class="fa-regular fa-id-badge"></i>
+<a href="{{path("profile_index")}}">Votre profil</a> <br>
+			<i class="fa-solid fa-box"></i>
+<a href="{{path("address_recap")}}">Vos adresses</a>
+
+
+
+			<h3 class="profileDiv">Achats</h3>
+			<i class="fa-solid fa-basket-shopping"></i>
+			<p>Commandes et suivis</p>
+			<i class="fa-solid fa-file-invoice"></i>
+			<p>Factures</p>
+
+			<div class="profileDiv">
+				<i class="fa-solid fa-power-off"></i>
+				<p>Se déconnecter</p>
+			</div>
+		</div>
+
+		<div class="col-md-9 text-center">
+			<h1>Profil</h1>
+
+			<hr>
+
+			{% if user.gender == "Homme" %}
+				<i class="fa-solid fa-mars"></i>
+			{% else %}
+				<i class="fa-solid fa-venus"></i>
+			{% endif %}
+
+			<p>Civilité :
+				{{user.gender}}
+				-
+				<i class="fa-solid fa-envelope"></i>
+				Email :
+
+				{{user.email}}</p>
+			<br>
+			<p>Nom :
+				{{user.lastname}}
+				- Prénom :
+				{{user.firstname}}</p>
+			<hr>
+
+			<i class="fa-solid fa-pencil"></i>
+			<a href="">Modifier le profil</a>
+
+			<hr>
+
+			<i class="fa-solid fa-lock"></i>
+			<a href="">Modifier le mot de passe</a>
+
+			<hr>
+
+		</div>
+	</div>
+{% endblock %}

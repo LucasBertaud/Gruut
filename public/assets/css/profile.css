@@ -1,0 +1,19 @@
+.profileName {
+        font-size: 25px !important;
+        margin-left: 20px !important;
+        margin-top: unset !important;
+        margin-bottom: unset !important;
+}
+
+.left-profile-container {
+        display: flex !important;
+        align-items: center !important;
+        padding: 2vh;
+}
+
+.profileDiv{
+        border-top: 1px black solid;
+        padding-top: 20px;
+        margin-top: unset;
+        margin-bottom: unset;
+}

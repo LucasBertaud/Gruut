@@ -65,7 +65,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'second_options' => ['label' => 'Confirmez votre mot de passe',
                 'attr' => [
-                    'placeholder' => 'Merci de confirmez votre mot de passe',
+                    'placeholder' => 'Merci de confirmer votre mot de passe',
                     'class' => 'form-label col-md-6'
                 ]
                 ],

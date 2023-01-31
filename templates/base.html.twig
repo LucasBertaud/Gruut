@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +10,16 @@
 			{% block title %}{% endblock %}
 			- Gruut</Title>
 
-		<link rel="stylesheet" href="{{asset("assets/images/gt_favicon.png")}}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/de40581f96.js" crossorigin="anonymous" defer></script>
+
+		<link rel="stylesheet" href="{{asset("assets/images/g.png")}}">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 		<link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 		<link rel="stylesheet" href="{{asset("assets/css/bootstrap.min.css")}}">
 		<link
 		rel="stylesheet" href="{{asset("assets/css/font-awesome.min.css")}}">
@@ -25,11 +30,33 @@
 
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-			<![endif]-->{% block css %}
+									<script src="assets/js/html5shiv.js"></script>
+									<script src="assets/js/respond.min.js"></script>
+				<![endif]-->{% block css %}
+
 	{% endblock %}
 	</head>
+
+	<style>
+
+	.item {
+    position:relative;
+    padding-top:20px;
+    display:inline-block;
+}
+
+	.notify-badge{
+		position: absolute;
+		right:-20px;
+		top:10px;
+		background:red;
+		text-align: center;
+		border-radius: 30px 30px 30px 30px;
+		color:white;
+		padding:5px 10px;
+	}
+
+	</style>
 
 		<body
 		class="home"> <!-- Fixed navbar -->
@@ -43,21 +70,43 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{asset('assets/images/Gruut.svg')}}" alt="Progressus HTML5 template"></a>
+					<a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{asset('assets/images/Gruut.svg')}}" alt="Progressus HTML5 template" class="img-fluid"></a>
 				</div>
 				<div class="navbar-collapse collapse">
+
+							{% if quantity.getQuantity() > 0 %}
+								<div class="item" style="float:right;">								
+									<a href="{{ path("cart_index")}}">
+										<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+										<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+									</a>
+								 </div>
+								<p></p>
+							{% else %}
+								<div class="item" style="float:right;">								
+									<a href="{{ path("cart_index")}}">
+										<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+										<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+									</a>
+								 </div>
+								 <p></p>
+						{% endif %}   
+
+
 					<ul class="nav navbar-nav pull-right">
 						<li>
 							<a href="{{ path("category_index") }}">Nos produits</a>
+							<div class="underline"></div>
 						</li>
 
 
 						<li>
 							<a href="{{ path("app_contact") }}">Contact</a>
+							<div class="underline">alors</div>
 						</li>
 						{% if app.user %}
 							<li>
-								<a class="btn" href="{{ path("app_register") }}">Profil</a>
+								<a class="btn" href="{{ path("profile_index") }}">Profil</a>
 							</li>
 							<li>
 								<a class="btn" href="{{ path("app_logout") }}">Déconnexion</a>
@@ -70,14 +119,13 @@
 								<a class="btn" href="{{ path("app_register") }}">Inscription</a>
 							</li>
 						{% endif %}
-						    <li>
-								<a href="{{ path("cart_index")}}">
-									<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
-								</a>
-							<li>
+						<li>
 
 
+						</li>
 					</ul>
+							 
+
 				</div>
 				<!--/.nav-collapse -->
 			</div>

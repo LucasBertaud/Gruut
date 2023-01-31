@@ -80,3 +80,35 @@ img.pull-left { margin-right: 10px; }
 
 	.widget-simplenav { margin-left:-5px; }		
 	.widget-simplenav a{ margin:0 5px; }		
+
+	.nav {
+		display: flex !important;
+	}
+	
+	li{
+		align-self: center !important;
+	}
+
+	li a{
+		color: white !important;
+		
+	}
+
+	li a:hover::after {
+		border-bottom: white 2px solid;
+		border-radius: 5px;
+		transition: all 0.5s;
+		animation: leftright 1s linear forwards;
+	}
+
+	@keyframes leftright {
+		from {
+			width: 0px;
+		}
+
+		to {
+			width: 100px;
+		}
+	}
+
+	

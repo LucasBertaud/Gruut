@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adresse{% endblock %}
+
+{% block content %}
+<header id="head" class="secondary"></header>
+<style>
+    .secondary{
+        background: none !important;
+    }
+
+</style>
+
+<div class="container">
+ {{ form_start(addressForm) }}
+
+<div class="row">
+<div class="col-md-12">{{form_row(addressForm.name)}}</div>
+<div class="col-md-6">{{form_row(addressForm.lastname)}}</div> 
+<div class="col-md-6">{{form_row(addressForm.firstname)}}</div>
+<div class="col-md-12">{{form_row(addressForm.company)}}</div>
+<div class="col-md-12">{{form_row(addressForm.address)}}</div>
+<div class="col-md-6">{{form_row(addressForm.postal)}}</div>
+<div class="col-md-6">{{form_row(addressForm.city)}}</div>
+<div class="col-md-6">{{form_row(addressForm.phone)}}</div>
+<div class="col-md-6">{{form_row(addressForm.country)}}</div>
+
+
+</div>
+{{ form_end(addressForm)}}
+
+
+
+</div>
+
+{% endblock %}
