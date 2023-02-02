@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}Commande
+{% endblock %}
+{% block css %}
+
+<link rel="stylesheet" href="{{ asset ('assets/css/orderStyle.css')}}">
+	{% endblock %}
+{% block content %}
+	
+	<br><br><br><br>
+	<main class="container">
+    <h2>Récapitulatif de votre commande</h2>
+    
+    <table class="table">
+        <thead class='text-center'>
+            <tr>
+                <th colspan="2" >Information sur le transporteur</th>
+            </tr>
+            <tr>
+                <th>Nom du transporteur</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+            <tbody>
+            <td><strong></strong></td>
+
+            </tbody>
+    </table>
+   
+        
+            </div>
+		
+	{% endblock %}

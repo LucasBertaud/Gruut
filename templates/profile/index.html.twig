@@ -9,10 +9,19 @@
 
 {% block content %}
 
-	<header id="head" class="secondary"></header>
+	<header id="head" class="secondary" style="min-height: 80px; height:0px"></header>
 	<style>
 		.secondary {
 			background: none !important;
+		}
+
+		.navbar-inverse {
+			background-color: #038C17;
+			opacity: 1;
+		}
+
+		.top-space {
+			margin-top: 0px !important;
 		}
 	</style>
 	<div class="row">
@@ -24,23 +33,35 @@
 			</div>
 			<h3 class="profileDiv">Compte</h3>
 			<br>
-			<i class="fa-regular fa-id-badge"></i>
-			<a href="{{path("profile_index")}}">Votre profil</a>
+			<div class="my-profile btn btn-block" style="background: white; border-radius:20px; width: 255px;height: 64px;">
+				<i class="fa-regular fa-id-badge"></i>
+				<a href="{{path("profile_index")}}">Votre profil</a>
+			</div>
 			<br>
-			<i class="fa-solid fa-box"></i>
-			<a href="{{path("address_recap")}}">Vos adresses</a>
-
+			<div class="my-adress btn btn-block" style="background: white; border-radius:20px;  width: 255px;height: 64px;">
+				<i class="fa-solid fa-box"></i>
+				<a href="{{path("address_recap")}}">Vos adresses</a>
+			</div>
+			<br>
+			<div class="my-data btn btn-block" style="background: white; border-radius:20px; margin-bottom:5vh;  width: 255px;height: 64px;">
+				<i class="fa-solid fa-database"></i>
+				<a href="{{path("profile_data", {"id" : id})}}">Vos données</a>
+			</div>
 
 			<h3 class="profileDiv">Achats</h3>
-			<i class="fa-solid fa-basket-shopping"></i>
-			<p>Commandes et suivis</p>
-			<i class="fa-solid fa-file-invoice"></i>
-			<p>Factures</p>
-
+			<div class="my-order btn btn-block" style="background: white; border-radius:20px;  width: 255px;height: 64px;">
+				<i class="fa-solid fa-basket-shopping"></i>
+				<p>Commandes et suivis</p>
+			</div>
+			<div class="bill btn btn-block" style="background: white; border-radius:20px; margin-bottom:5vh;  width: 255px;height: 64px;">
+				<i class="fa-solid fa-file-invoice"></i>
+				<p>Factures</p>	
+			</div>
 			<div class="profileDiv">
-				<i class="fa-solid fa-power-off"></i>
-				<a href="{{path("app_logout")}}">Se déconnecter</a>
-
+				<div class="log-out btn btn-block" style="background: white; border-radius:20px; margin-bottom:5vh;  margin-top:3vh;  width: 255px;height: 64px;">
+					<i class="fa-solid fa-power-off"></i>
+					<a href="{{path("app_logout")}}">Se déconnecter</a>
+				</div>
 			</div>
 		</div>
 
