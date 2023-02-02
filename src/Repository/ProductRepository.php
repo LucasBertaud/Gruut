@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,6 +40,7 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le mot de passe
+{% endblock %}
+
+{% block content %}
+	<br>
+	<br>
+	<br>
+	<div class="container">
+		<h1 class="text-center">Modifier votre profil</h1>
+		<br>
+		<div {% if alert != null %} class="alert alert-success" {% endif %} role="alert">{{alert}}</div>
+		<br>
+
+
+		{{ form_start(profileForm) }}
+
+		{{ form_row(profileForm.email) }}
+		{{ form_row(profileForm.firstname) }}
+		{{ form_row(profileForm.lastname) }}
+		{{ form_row(profileForm.gender) }}
+		<button class="btn btn-primary">Confirmez vos modifications</button>
+		{{ form_end(profileForm) }}
+	</div>
+{% endblock %}
+
+
+{% block script %}
+	<script>
+		if ({{ exitDelay }} == true) {
+setTimeout(function () {
+window.location.href = "{{ path('profile_index') }}";
+}, 2000);
+}
+	</script>
+{% endblock %}

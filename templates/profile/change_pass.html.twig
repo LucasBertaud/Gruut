@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le mot de passe
+{% endblock %}
+
+{% block content %}
+	<br>
+	<br>
+	<br>
+	<div class="container">
+		<h1 class="text-center">Modifier votre mot de passe</h1>
+		<br>
+<div {% if alert != null %} {% if alert == "Votre mot de passe a bien été modifié, vous allez être redirigé vers votre profil." %} class="alert alert-success" {% else %} class="alert alert-danger" {% endif %} {% else %} {% endif %} role="alert">{{alert}}</div>
+
+
+
+		<br>
+
+		{{ form_start(resetForm) }}
+		{{ form_row(resetForm.oldPassword) }}
+		{{ form_row(resetForm.plainPassword) }}
+		<button class="btn btn-primary">Reset password</button>
+		{{ form_end(resetForm) }}
+	</div>
+{% endblock %}
+
+
+{% block script %}
+	<script>
+		if ({{ exitDelay }} == true) {
+setTimeout(function () {
+window.location.href = "{{ path('profile_index') }}";
+}, 2000);
+}
+	</script>
+{% endblock %}

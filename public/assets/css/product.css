@@ -1,8 +1,8 @@
-.flexbyme {
-    /* display: flex;
+/* .flexbyme {
+     display: flex;
     position: absolute;
-    bottom: 0; */
-}
+    bottom: 0; 
+} */
 
 .flexbyme2{
     display: flex;
@@ -12,3 +12,113 @@
 .img{
     margin-top: 30px;
 }
+.text-center{
+    text-decoration: underline !important;
+}
+
+.card {
+    position: relative;
+    border-radius: 5px;
+    width: 190px;
+    height: 254px;
+    padding: .8em;
+    background: #9fd19067;
+    overflow: visible;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+   }
+
+   .card-info {
+    padding-top: 10%;
+   }
+    
+   .card-footer {
+    position: absolute;
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    bottom: 0;
+   }
+   
+   /*Text*/
+   .text-title {
+    font-weight: 900;
+    font-size: 1.2em;
+    line-height: 1.5;
+   }
+   
+   .text-body {
+    font-size: .9em;
+    padding-bottom: 10px;
+   }
+   
+   /*Button*/
+   .card-button {
+    display: flex;
+    padding: .3em;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: .3s ease-in-out;
+   }
+   
+   /*Hover*/
+   .card:hover {
+    /* transform: translateY(-5%);
+    -ms-transform: scale(1.1); /* IE 9 */
+    -webkit-transform: scale(1.1); /* Safari 3-8 */
+    transform: scale(1.1);
+    box-shadow: rgba(226, 196, 63, 0.25) 0px 13px 47px -5px, rgba(180, 71, 71, 0.3) 0px 8px 16px -8px; 
+
+   }
+   
+   .card-button:hover {
+    border: 1px solid #058117;
+    background-color: #058117;
+   }
+   
+   #card-button-empty:hover {
+    border: none !important;
+    background-color: unset !important;
+   }
+   
+    .text-danger:hover:after{
+       position: absolute;
+       width: 20vw;
+       z-index: 1;
+       content: "Produit en rupture de stock, déso !";
+       background-color: rgb(231, 231, 231);
+       border-radius: 5px;
+   } 
+
+
+
+   .item {
+    position:relative;
+    padding-top:20px;
+    display:inline-block;
+}
+
+	.notify-badge{
+		position: absolute;
+		right:-20px;
+		top:10px;
+		background:red;
+		text-align: center;
+		border-radius: 30px 30px 30px 30px;
+		color:white;
+		padding:5px 10px;
+	    
+	}
+
+    .blink:active .notify-badge{
+        animation: blink 1s;
+        color: black !important;
+    }
+    
+      @keyframes blink { 
+        0% { opacity:0; }
+        50% { opacity:1; } 
+        100% { opacity:0; }
+      }

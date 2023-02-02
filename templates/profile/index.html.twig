@@ -25,10 +25,10 @@
 			<h3 class="profileDiv">Compte</h3>
 			<br>
 			<i class="fa-regular fa-id-badge"></i>
-<a href="{{path("profile_index")}}">Votre profil</a> <br>
+			<a href="{{path("profile_index")}}">Votre profil</a>
+			<br>
 			<i class="fa-solid fa-box"></i>
-<a href="{{path("address_recap")}}">Vos adresses</a>
-
+			<a href="{{path("address_recap")}}">Vos adresses</a>
 
 
 			<h3 class="profileDiv">Achats</h3>
@@ -39,7 +39,8 @@
 
 			<div class="profileDiv">
 				<i class="fa-solid fa-power-off"></i>
-				<p>Se déconnecter</p>
+				<a href="{{path("app_logout")}}">Se déconnecter</a>
+
 			</div>
 		</div>
 
@@ -69,12 +70,14 @@
 			<hr>
 
 			<i class="fa-solid fa-pencil"></i>
-			<a href="">Modifier le profil</a>
+			<a href="{{path("profile_modify", {'id' : id})}}">Modifier le profil</a>
+
 
 			<hr>
 
 			<i class="fa-solid fa-lock"></i>
-			<a href="">Modifier le mot de passe</a>
+			<a href="{{path('profile_change_password', {'id' : id})}}">Modifier le mot de passe</a>
+
 
 			<hr>
 

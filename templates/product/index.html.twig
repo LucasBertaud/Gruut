@@ -8,48 +8,101 @@
 {% endblock %}
 
 {% block content %}
-<header id="head" class="secondary"></header>
+	<header id="head" class="secondary"></header>
 
-<style>
-    .secondary{
-        background: none !important;
-    }
+	<style>
+		.secondary {
+			background: none !important;
+		}
 
-</style>
-	
+		.row1 {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-content: center;
+			justify-content: center;
+			align-items: center;
+		}
+
+	</style>
+
+<div class="container">
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<h1 class="text-center">Catégorie <br>{{categories.name}} </h1>
-			<div class="row">
- {% for product in categories.products %} 
+			<h1 class="text-center">Catégorie
+				<br>{{categories.name}}
+			</h1>
+			<div class="row1 row" style="margin-top:5vh;">
+				{% for product in categories.products %}
 
-					<div class="col-md-4" style="height: 350px">
-<a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px"></a>
+					{# <div class="col-md-4" style="height: 350px">
+						<a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px"></a>
 
 
 						<div class="describe" style="height:50px;">
-						<h4>{{product.name}}</h4>
-						<span class="product-subtitle">
-							{{ product.subtitle }}
-						</span>
-					</div>
-						<div class="flexbyme ">
+							<h4>{{product.name}}</h4>
+							<span class="product-subtitle">
+								{{ product.subtitle }}
+							</span>
+						</div> #}
+
+
+						<div class="card col-md-3" style="height: 350px; margin:2vw; float:left;">
+							<div class="card-img"> <a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px" style="border-radius:5px; min-height:150px;" ></a></div>
+								<div class="card-info">
+									<p class="text-title">{{product.name}}</p>		
+									<p class="text-body">{{ product.subtitle }}</p>
+								</div>
+								<div class="card-footer">
+									<span class="text-title">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
+									<div class="card-button" {% if  product.stock < 1 %} id="card-button-empty" {% endif %}>
+										{% if  product.stock > 0 %}
+											<a href="{{path("cart_add", {"id" : product.id})}}" class="click"><img src="{{asset("assets/images/group12.png")}}" alt="commander" class="blink"></a>			
+										{% else %}
+											<div class="text-danger" data-toggle="tooltip" data-placement="top"><i class="fa-solid fa-triangle-exclamation" style="font-size:25px"></i></div>
+										{% endif %}
+									</div>
+								</div>
+						</div>
+						{# <div class="flexbyme ">
 							<h3 style="font-weight: bolder" class="product-price">
 								<span style="text-decoration: underline">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
-{% if  product.stock > 0 %}
-								<a href="{{path("cart_add", {"id" : product.id})}}"><img src="{{asset("assets/images/group12.png")}}" alt="commander"></a>
-{% else %}
-<p class="text-danger">Produit temporairement en rupture de stock</p>
+								{% if  product.stock > 0 %}
+									<a href="{{path("cart_add", {"id" : product.id})}}" class="click"><img src="{{asset("assets/images/group12.png")}}" alt="commander"></a>
+								{% else %}
+									<p class="text-danger">Produit temporairement en rupture de stock</p>
 
-{% endif %}
+								{% endif %}
 							</h3>
-						</div>
+						</div> #}
 
-					</div>
+					{# </div> #}
 
 
-				{% endfor %} 
+				{% endfor %}
 			</div>
 		</div>
 	</div>
+</div>
 {% endblock %}
+
+ {% block script %}
+ 
+ <script>
+ 
+	var click1 = document.getElementsByClassName('click');
+	var nbPanier = document.querySelector('.notify-badge');
+
+
+for(var i=0; i<click1.length; i++){
+
+	click1[i].addEventListener ("click", () => {
+			nbPanier.style.background = "black";
+	})
+}
+
+
+
+ </script>
+ 
+ {% endblock %}

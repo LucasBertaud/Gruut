@@ -2,9 +2,11 @@
 
 namespace App\Classe;
 
-
+use App\Entity\Categories;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -13,7 +15,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class Cart
 {
 
-    public function __construct(private RequestStack $request, private EntityManagerInterface $entityManager)
+    public function __construct(private RequestStack $request, private EntityManagerInterface $entityManager, private ProductRepository $productRepository)
     {
     }
 
@@ -159,5 +161,30 @@ class Cart
             $quantity += $element ['quantity'];
         }
         return $quantity;
+    }
+
+    public function getFullPaginated($page)
+    {
+        
+
+        $session = $this->request->getSession();
+        $data = $session->get('cart', []);
+        $dataCart = [];
+        if ($data) {
+            foreach ($data as $id => $quantity) {
+                $product = $this->entityManager->getRepository(Product::class)->findOneById($id);
+                $dataCart[] = [
+                    'product' => $product,
+                    'quantity' => $quantity,                    
+                ];                
+            }
+            
+       
+        
+
+       
+
+    }
+
     }
 }

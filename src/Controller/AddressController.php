@@ -31,13 +31,12 @@ class AddressController extends AbstractController
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-        $address->setUserId($this->getUser());
-        $this->entityManager->persist($address);
-        $this->entityManager->flush();
-        return $this->redirectToRoute('address_recap');
-    }
+            $address->setUserId($this->getUser());
+            $this->entityManager->persist($address);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('address_recap');
+        }
         return $this->render('address/index.html.twig', ['addressForm' => $form->createView()]);
-        
     }
 
     #[Route('/recap', name: 'recap')]
@@ -60,9 +59,9 @@ class AddressController extends AbstractController
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-        $this->entityManager->persist($address);
-        $this->entityManager->flush();
-        return $this->redirectToRoute('address_recap');
+            $this->entityManager->persist($address);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('address_recap');
         }
         return $this->render('address/index.html.twig', ['addressForm' => $form->createView()]);
     }
@@ -71,7 +70,7 @@ class AddressController extends AbstractController
     public function delete(AddressRepository $addressRepository, $id): Response
     {
         $address = $addressRepository->findOneById($id);
-        if($address && $address->getUserId() == $this->getUser()){
+        if ($address && $address->getUserId() == $this->getUser()) {
             $this->entityManager->remove($address);
             $this->entityManager->flush();
         }

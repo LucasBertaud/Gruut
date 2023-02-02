@@ -47,7 +47,7 @@
 				{% for categorie in categories %}
 
 					<div class="col-md-4" style="height: 350px">
-						<p>{{categorie.name}}</p><br>
+						<h3>{{categorie.name}}</h3><br>
 						 <a href="{{path("category_list", { 'slug' : categorie.slug } )}}"><img src="{{asset('assets/images/')}}{{categorie.illustration}}" alt="{{categorie.name}}" class="" width="250px" height="250px"></a> 
 					</div>
 

@@ -44,10 +44,12 @@ class Address
     #[ORM\Column]
     private ?int $phone = null;
 
+    
     public function __toString()
     {
-        $this->getName().'[br]'.$this->getAddress();
+        return $this->getName() . ' - '. $this->getAddress() .' - '. $this->getCity(). ' - '.$this->getCountry();
     }
+    
 
     public function getId(): ?int
     {
