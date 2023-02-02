@@ -92,16 +92,26 @@
  
 	var click1 = document.getElementsByClassName('click');
 	var nbPanier = document.querySelector('.notify-badge');
+	var cardButtons = document.querySelectorAll('.card-button');
 
 
 for(var i=0; i<click1.length; i++){
 
 	click1[i].addEventListener ("click", () => {
-			nbPanier.style.background = "black";
+			nbPanier.classList.add("animation");
+			setTimeout(function(){
+				nbPanier.classList.remove("animation");
+			}, 500
+			);
 	})
 }
 
-
+cardButtons.forEach(function(cardButton){
+cardButton.addEventListener("click", () => {
+	cardButton.classList.add("animationcard");
+} )
+	} 	 
+)
 
  </script>
  

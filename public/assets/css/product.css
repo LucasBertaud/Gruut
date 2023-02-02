@@ -74,13 +74,17 @@
    }
    
    .card-button:hover {
-    border: 1px solid #058117;
-    background-color: #058117;
+    border: 1px solid #0AAE22;
+    background-color: #0AAE22;
    }
    
    #card-button-empty:hover {
     border: none !important;
     background-color: unset !important;
+   }
+
+   .animationcard {
+    transform: scale(1.15);
    }
    
     .text-danger:hover:after{
@@ -109,10 +113,10 @@
 		border-radius: 30px 30px 30px 30px;
 		color:white;
 		padding:5px 10px;
-	    
+        overflow: hidden;
 	}
 
-    .blink:active .notify-badge{
+    .click:active .notify-badge{
         animation: blink 1s;
         color: black !important;
     }
@@ -122,3 +126,29 @@
         50% { opacity:1; } 
         100% { opacity:0; }
       }
+
+.animation::after{
+        content: '';
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+            animation: ShineAnim 5s ease forwards;
+}
+
+@keyframes ShineAnim{
+0% {
+        left: -100%
+    }
+
+    10% {
+        left: 100%
+    }
+
+    100% {
+        left: 100%
+    }
+}

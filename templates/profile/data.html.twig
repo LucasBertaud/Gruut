@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos données
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<h1>Vos données</h1>
+<p>Nous prenons la protection de vos données personnelle au sérieux. Conformément au règlement RGPD, nous voulons vous informer de la collecte, de l'utilisation et de la conservation de vos données. Vous avez le droit de savoir quelles informations nous détenons sur vous et comment nous les utilisons. Veuillez nous contacter si vous avez des questions ou des préoccupations concernant vos données.</p>
+<br>
+<p>Vous pouvez télécharger vos données d'utilisateur juste en dessous.</p>
+<br>
+<a href="{{ path('profile_data_download', { 'id': user.id }) }}">Télécharger les données</a>
+{% endblock %}

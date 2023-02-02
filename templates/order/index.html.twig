@@ -1,17 +1,19 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Commande
 {% endblock %}
+{% block css %}
 
+<link rel="stylesheet" href="{{ asset ('assets/css/orderStyle.css')}}">
+	{% endblock %}
 {% block content %}
 	<br>
 	<br><br><br><br>
 	<main class="container">
-		<div class="row mt-5 mb-1">
+		<div class="row">
 			<div class="col-md-5 text-center">
 				<h3>Choissisez votre adresse de livraison</h3>
 				<hr>
-				{{form_start(form)}}
+				{{form_start(form, {action:path('order_recap')})}}
 				{{ form_row(form.addresse) }}
 				
 				<h3>Choissisez votre transporteur</h3>
@@ -23,25 +25,31 @@
 				{{formHtml | replace({'[br]': '<br>', '[hr]' :'<hr>'})| raw}}
 			</div>
 			<div class="col-md-7 text-center">
-	<h3>Récapitulatif de votre commande</h3>
+			<h3>Récapitulatif de votre commande</h3>
+			<hr>
 				{% for product in cart %}
-					<div class="row text-center">
-					
-						<hr>
+					<div class="row text-center">				
+						
 						<div class="col-md-4 db-flex justify-content-center">
 							<img src="{{asset('assets/images/')}}{{product.product.illustration}}" alt="{{product.product.name}}" width='100px' height='100px'>
+						
 						</div>
-
 						<div class="col-md-8">
 							<h4>{{product.product.name}}</h3>
 							<p>{{product.product.price /100}}€</p>
 							<p> {{product.quantity}} {% if product.quantity > 1  %} Articles  {% else %}
 								Article {% endif %}
-							</p>
+							</p>							
 						</div>
-					</div>					
+						
+					</div>	
+					<hr>				
 				{% endfor %}
-					{{ knp_pagination_render(cart)}}
+				
+				<div class="center">
+					{% do  cart.setPageRange(4) %}
+					{{ knp_pagination_render(cart, '_partial/_pagination.html.twig')}}
+				</div>
 			</div>
 			
 		</div>
