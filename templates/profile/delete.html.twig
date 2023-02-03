@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Adresse{% endblock %}
+{% block title %}Supprimer son compte
+{% endblock %}
 
 {% block css %}
 	<link rel="stylesheet" href="{{asset('assets/css/profile.css')}}">
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
 <header id="head" class="secondary" style="min-height: 80px; height:0px"></header>
 <style>
 	.secondary {
@@ -23,6 +24,7 @@
 		margin-top: 0 !important;
 	}
 </style>
+
 <div class="row">
 	<div class="col-md-3 text-center" style="background-color: #EDEDED; border-right: 2px solid #898989">
 		<div class="left-profile-container">
@@ -75,29 +77,13 @@
 		</div>
 	</div>
 
-	<div class="col-md-9 text-center">
+<div class="col-md-9 text-center">
 
-    <h1>Formulaire d'adresse</h1>
+	<h1>Supprimer son compte</h1>
 
- {{ form_start(addressForm) }}
-
-<div class="row">
-<div class="col-md-12">{{form_row(addressForm.name)}}</div>
-<div class="col-md-6">{{form_row(addressForm.lastname)}}</div> 
-<div class="col-md-6">{{form_row(addressForm.firstname)}}</div>
-<div class="col-md-12">{{form_row(addressForm.company)}}</div>
-<div class="col-md-12">{{form_row(addressForm.address)}}</div>
-<div class="col-md-6">{{form_row(addressForm.postal)}}</div>
-<div class="col-md-6">{{form_row(addressForm.city)}}</div>
-<div class="col-md-6">{{form_row(addressForm.phone)}}</div>
-<div class="col-md-6">{{form_row(addressForm.country)}}</div>
-
-
-</div>
-{{ form_end(addressForm)}}
-
-
+<a href="{{path("profile_delete_account_erase")}}">Supprimer son compte</a>
 </div>
 </div>
 
 {% endblock %}
+

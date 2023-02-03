@@ -178,12 +178,6 @@ class Cart
                     'quantity' => $quantity,                    
                 ];                
             }
-            
-       
-        
-
-       
-
     }
 
     }

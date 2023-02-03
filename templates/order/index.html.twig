@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-md-8">
 							<h4>{{product.product.name}}</h3>
-							<p>{{product.product.price /100}}€</p>
+							<p>{{(product.product.price /100) |number_format(2, ',','.')}}€</p>
 							<p> {{product.quantity}} {% if product.quantity > 1  %} Articles  {% else %}
 								Article {% endif %}
 							</p>							
@@ -55,7 +55,7 @@
 		</div>
 		{# <div class="row margin-top-2">
 				<div class="col-md-12 text-right">
-					<h4> Nombre d'article : {{quantity.getQuantity()}} </h4>	
+					<h4> Nombre d'article : C </h4>	
 					<h4>Total : {{total}} € </h4>						
 										
 		</div> #}

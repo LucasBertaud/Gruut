@@ -3,31 +3,69 @@
 {% endblock %}
 {% block css %}
 
-<link rel="stylesheet" href="{{ asset ('assets/css/orderStyle.css')}}">
-	{% endblock %}
+	<link rel="stylesheet" href="{{ asset ('assets/css/orderStyle.css')}}">
+{% endblock %}
 {% block content %}
-	
 	<br><br><br><br>
 	<main class="container">
-    <h2>Récapitulatif de votre commande</h2>
-    
-    <table class="table">
-        <thead class='text-center'>
-            <tr>
-                <th colspan="2" >Information sur le transporteur</th>
-            </tr>
-            <tr>
-                <th>Nom du transporteur</th>
-                <th>Prix</th>
-            </tr>
-        </thead>
-            <tbody>
-            <td><strong></strong></td>
+		<h2>Récapitulatif de votre commande</h2>
+        <hr>
+		{% include "_partial/_flash.html.twig" %}
+		<div class="row">
+				<div class="col-md-4 text-center fluid">
+				<h4><u> Votre transporteur </u></h4>
+                
+				<p>Nom : {{carrier.name}}</p>
+				<p>Prix du transport : {{carrier.price / 100 }}
+					€</p>				
+				</div>
+				<div class="col-md-4 text-center fluid">
+				<h4><u>Votre adresse de livraison</u> 
+				<br>
+				</h4>
+				{{delivery | raw }}
+				<br>
+				<br>
+                
+				</div>
+				
+				<div class="col-md-4 text-center">
+				<h4><u>Votre commande</u> 
+				<br>
+				</h4>
+					<table class='table table-striped table-bordered'>
+							<tr>
+								<th>Nombre d' {% if(quantity.getQuantity() > 1) %} articles {% else %}
+									article {% endif %} </th>
+								<td>{{quantity.getQuantity()}}</td>
+							</tr>
+							<tr>
+								<th>Sous-total :</th>
+								<td>{{cartTotal |number_format(2, ',','.')}} €</td>
+							</tr>
+							<tr>
+								<th>Livraison : </th>
+								<td>{{(carrier.price /100) |number_format(2, ',','.')}} €</td>
+							</tr>	
 
-            </tbody>
-    </table>
-   
-        
-            </div>
-		
-	{% endblock %}
+							<tr>
+								<th>Total : </th>
+								<td>{{ (cartTotal + (carrier.price /100)) |number_format(2, ',','.') }}€</td>
+							</tr>				
+					</table>
+					<form action="{{ path('app_stripe',{'reference': reference}) }}" method="POST">
+                			<button type="submit" id="checkout-button" class="btn btn-info btn-block mt-3">Payer ma commande </a>
+                 	</form>
+
+		</div>
+
+		 
+			
+		</main>
+
+
+
+			
+						
+				
+		{% endblock %}

@@ -6,6 +6,7 @@ use App\Classe\Cart;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
 use App\Form\OrderType;
+use App\Repository\ProductRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -28,6 +29,7 @@ class OrderController extends AbstractController
         
         
         if(!$this->getUser()->getAddresses()->getValues()){
+            
             return $this->redirectToRoute('address_index');
         }
 
@@ -48,7 +50,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/commande/recapitulatif', name: 'recap', methods:'POST')]
-    public function add(Cart $cart, Request $request, PaginatorInterface $paginator): Response
+    public function add(Cart $cart, Request $request, PaginatorInterface $paginator,ProductRepository $productRepository): Response
     {
         $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser()
@@ -60,15 +62,15 @@ class OrderController extends AbstractController
             $date = new DateTimeImmutable();
             $carriers = $form->get('carrier')->getData();
             $delivery = $form->get('addresse')->getData();
-            $delivery_content = $delivery->getFirstname().' '.$delivery->getLastname();
-            $delivery_content .= '<br>'.$delivery->getPhone();
+            $delivery_content = 'Nom: '.$delivery->getLastname() . '<br>Prénom: ' . $delivery->getFirstname();
+            $delivery_content .= '<br> Numéro de téléphone: '.$delivery->getPhone();
 
             if($delivery->getCompany()){
                 $delivery_content .= '<br>'.$delivery->getCompany();
             }               
-            $delivery_content .= '<br>'.$delivery->getAddress();
-            $delivery_content .= '<br>'.$delivery->getPostal().' '.$delivery->getCity();
-            $delivery_content .= '<br>'.$delivery->getCountry();    
+            $delivery_content .= '<br> Adresse : '.$delivery->getAddress();
+            $delivery_content .= '<br> Code Postal: '.$delivery->getPostal().' <br>Ville: '.$delivery->getCity();
+            $delivery_content .= '<br> Pays : '.$delivery->getCountry();    
 
             $order = new Order();
             $reference = $date->format('dmY').'-'.uniqid();
@@ -78,7 +80,8 @@ class OrderController extends AbstractController
             $order->setCarrierName($carriers->getName());
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($delivery_content);
-            $order->setState(0);
+            $order->setIsPaid(0);
+            $order->setStripeSessionId(0);
 
             $this->entityManager->persist($order);
 
@@ -92,29 +95,38 @@ class OrderController extends AbstractController
                 $this->entityManager->persist($orderDetails);
 
             }
+            
+            $this->entityManager->flush();
 
-
-            // $this->entityManager->flush();
-
-// ------------------------------------------------------------------------------------------------ //
-
-            $data = $cart->getFull();
-
-            $articles = $paginator->paginate(
-                $data,
-                $request->query->getInt('page', 1), 
-                3);
-// ------------------------------------------------------------------------------------------------ //
-
-
-        return $this->render('order/add.html.twig', [
-        'cart' => $articles,
-        'carrier' => $carriers,
-        'delivery' => $delivery_content,
-        'reference' => $order->getReference()
-    ]);
+            $stateStock= [];
+            foreach($cart->getFull() as $product){
+                
+                $quantityStock = $product['product']->getStock();
+                $quantityBuy = $product['quantity'];
+                $quantityAfterBuy = $quantityStock - $quantityBuy;
+            
+                if($quantityAfterBuy < 0){
+                    $stateStock += [
+                        $product['product']->getName() => abs($quantityAfterBuy)
+                    ];
+                };                
+            };
+           
+            foreach($stateStock as $productName => $reliquat){
+                $this->addFlash('danger','Votre produit "' .$productName . '" comportera un reliquat dans votre commande de ' .$reliquat . (($reliquat >1) ? ' produits.': ' produit.'));
+            }
+            
+            return $this->render('order/add.html.twig',[
+            'cart' => $cart->getFull(),
+            'cartTotal' => $cart->getTotal(),
+            'carrier' => $carriers,
+            'delivery' => $delivery_content,
+            'reference' => $order->getReference()
+            ]);
+    
         }
-        return $this->redirectToRoute('cart');
-    }
+        
+    return $this->redirectToRoute('cart');
+  }
 
 }

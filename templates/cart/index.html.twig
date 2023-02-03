@@ -31,7 +31,7 @@
 					<tr>
 						<td><img src="{{asset("assets/images/")}}{{product.product.illustration}}" alt="" srcset="" height="50px" class"img-fluid"></td>
 						<td>{{product.product.name}}</td>
-						<td>{{product.product.price /100}}€</td>
+						<td>{{(product.product.price /100) |number_format(2, ',','.')}}€</td>
 						<td>
 
 							<a href="{{path ('cart_decrease' , {'id' : product.product.id})}}" class="btn btn-warning btn-xs">
@@ -44,7 +44,7 @@
 							</a>
 						</td>
 
-						<td>{{(product.product.price /100) * (product.quantity)  }}
+						<td>{{((product.product.price /100) * (product.quantity)) |number_format(2, ',','.') }}
 							€</td>
 						<td>
 							<a href="{{path ('cart_delete' , {'id' : product.product.id})}}" class="btn btn-danger btn-xs">
@@ -69,7 +69,7 @@
 				 {{quantity.getQuantity()}} 
 			</b><br>
 			<b>Total de mon panier:
-				{{ total}}
+				{{ total |number_format(2, ',','.')}}
 				€
 			</b>
             <br>

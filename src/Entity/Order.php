@@ -18,7 +18,7 @@ class Order
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete : "SET NULL")]
     private ?User $user = null;
 
     #[ORM\Column]
@@ -37,11 +37,14 @@ class Order
     private ?string $reference = null;
 
    
-    #[ORM\Column]
-    private ?int $state = null;
-
     #[ORM\OneToMany(mappedBy: 'my_order', targetEntity: OrderDetails::class)]
     private Collection $orderDetails;
+
+    #[ORM\Column(length: 255)]
+    private ?string $stripeSessionId = null;
+
+    #[ORM\Column]
+    private ?bool $isPaid = null;
 
     public function __construct()
     {
@@ -124,19 +127,7 @@ class Order
 
         return $this;
     }
-
-
-    public function getState(): ?int
-    {
-        return $this->state;
-    }
-
-    public function setState(int $state): self
-    {
-        $this->state = $state;
-
-        return $this;
-    }
+   
 
     /**
      * @return Collection<int, OrderDetails>
@@ -164,6 +155,30 @@ class Order
                 $orderDetail->setMyOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripeSessionId;
+    }
+
+    public function setStripeSessionId(string $stripeSessionId): self
+    {
+        $this->stripeSessionId = $stripeSessionId;
+
+        return $this;
+    }
+
+    public function getIsPaid(): ?bool
+    {
+        return $this->isPaid;
+    }
+
+    public function setIsPaid(bool $isPaid): self
+    {
+        $this->isPaid = $isPaid;
 
         return $this;
     }

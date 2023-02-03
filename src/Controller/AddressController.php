@@ -20,6 +20,7 @@ class AddressController extends AbstractController
 
     public function __construct(EntityManagerInterface $entityManager)
     {
+    
         $this->entityManager = $entityManager;
     }
 
@@ -27,6 +28,7 @@ class AddressController extends AbstractController
     #[Route('/formulaire', name: 'index')]
     public function index(Request $request): Response
     {
+        $user = $this->getUser();
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
@@ -36,7 +38,7 @@ class AddressController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute('address_recap');
         }
-        return $this->render('address/index.html.twig', ['addressForm' => $form->createView()]);
+        return $this->render('address/index.html.twig', ['addressForm' => $form->createView(), 'user' => $user]);
     }
 
     #[Route('/recap', name: 'recap')]
@@ -54,7 +56,7 @@ class AddressController extends AbstractController
     #[Route('/modifier/{id}', name: 'modify')]
     public function modify(AddressRepository $addressRepository, $id, Request $request): Response
     {
-
+        $user = $this->getUser();
         $address = $addressRepository->findOneById($id);
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
@@ -63,7 +65,7 @@ class AddressController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute('address_recap');
         }
-        return $this->render('address/index.html.twig', ['addressForm' => $form->createView()]);
+        return $this->render('address/index.html.twig', ['addressForm' => $form->createView(), 'user' => $user]);
     }
 
     #[Route('/supprimer/{id}', name: 'delete')]

@@ -9,9 +9,15 @@
 <br>
 
     <h1>Reset your password</h1>
-
     {{ form_start(resetForm) }}
+        {% if value == 5 %}
+        {{ form_row(resetForm.oldPassword) }}
         {{ form_row(resetForm.plainPassword) }}
+        {% endif %}
+        {% if value != 5 %}
+        {{ form_row(resetForm.plainPassword) }}
+        {% endif %}
+        
         <button class="btn btn-primary">Reset password</button>
     {{ form_end(resetForm) }}
 {% endblock %}

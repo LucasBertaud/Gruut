@@ -17,3 +17,28 @@
         margin-top: unset;
         margin-bottom: unset;
 }
+
+
+@media (max-width: 990px) {
+        .my-profile{
+                width: 90vw !important;
+        }
+        .my-adress{
+                width: 90vw !important;
+        }
+        .my-data{
+                width: 90vw !important;
+        }
+        .my-order{
+                width: 90vw !important;
+        }
+        .bill{
+                width: 90vw !important;
+        }
+        .log-out{
+                width: 90vw !important;
+        }
+        .log-account{
+                width: 90vw !important;
+        }
+}
