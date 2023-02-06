@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ComponentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\This;
 
@@ -20,28 +19,24 @@ class Component
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
-
     #[ORM\Column(length: 255)]
     private ?string $provider = null;
 
     #[ORM\Column]
-    private ?int $stock = null;
+    private ?int $quantity = null;
 
-    #[ORM\ManyToMany(targetEntity: ComponentProduct::class, mappedBy: 'component')]
-    private Collection $componentProducts;
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'component')]
+    private Collection $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function __toString()
     {
-        return $this->getName();
+        return $this->name;
     }
-    
-    public function __construct()
-    {
-        $this->componentProducts = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -59,18 +54,6 @@ class Component
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     public function getProvider(): ?string
     {
         return $this->provider;
@@ -83,42 +66,44 @@ class Component
         return $this;
     }
 
-    public function getStock(): ?int
+    public function getQuantity(): ?int
     {
-        return $this->stock;
+        return $this->quantity;
     }
 
-    public function setStock(int $stock): self
+    public function setQuantity(int $quantity): self
     {
-        $this->stock = $stock;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, ComponentProduct>
+     * @return Collection<int, Product>
      */
-    public function getComponentProducts(): Collection
+    public function getProducts(): Collection
     {
-        return $this->componentProducts;
+        return $this->products;
     }
 
-    public function addComponentProduct(ComponentProduct $componentProduct): self
+    public function addProduct(Product $product): self
     {
-        if (!$this->componentProducts->contains($componentProduct)) {
-            $this->componentProducts->add($componentProduct);
-            $componentProduct->addComponent($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->addComponent($this);
         }
 
         return $this;
     }
 
-    public function removeComponentProduct(ComponentProduct $componentProduct): self
+    public function removeProduct(Product $product): self
     {
-        if ($this->componentProducts->removeElement($componentProduct)) {
-            $componentProduct->removeComponent($this);
+        if ($this->products->removeElement($product)) {
+            $product->removeComponent($this);
         }
 
         return $this;
     }
+
+   
 }

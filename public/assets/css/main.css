@@ -121,3 +121,9 @@ img.pull-left { margin-right: 10px; }
 		font-style: italic !important;
 	   }
 	
+	   @media (max-width:300px) {
+		.navbar-brand{
+			padding: 2vh !important;
+		}
+		
+	}

@@ -68,21 +68,15 @@
 			</div>
 		</div>
 
-<div class="col-md-9">
+<div class="col-md-9 text-center">
 
 	<h1 class="text-center">Supprimer son compte</h1><br>
 
-<p>Vous avez la possibilité de demander la suppression de votre compte et de vos données personnelles enregistrées chez nous. Cependant, il est important de noter que certains de ces éléments, tels que les factures, doivent être conservés en raison des obligations légales et fiscales. Nous ferons de notre mieux pour effacer toutes les données personnelles en notre possession, mais certaines peuvent être exceptionnellement conservées.</p>
-<br>
-<p>Pour pouvoir supprimer vos données, veuillez entrez votre mot de passe.</p>
-<br>
+<p>Nous vous avons envoyé un email contenant un lien de suppression de compte.</p> <br>
 
-<div style="padding: 5vh;">
-			{{ form_start(passwordVerif) }}
-			{{ form_row(passwordVerif.passwordverif) }}
-			<button class="btn btn-primary" style="float:right;">Confirmez</button>
-			{{ form_end(passwordVerif) }}
-		</div>
+<p>Si vous n'avez reçu l'email, s'il vous plaît vérifiez vos spams ou <a href="{{ path('profile_delete_account') }}">essayez de nouveau</a>.</p>
+
+<a href="{{path("profile_delete_account_erase")}}">Supprimer son compte</a>
 </div>
 </div>
 

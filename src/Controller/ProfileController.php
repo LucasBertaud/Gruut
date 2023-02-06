@@ -5,15 +5,20 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordConnectedFormType;
 use App\Form\ChangeProfileType;
+use App\Form\PasswordVerificationType;
 use App\Repository\AddressRepository;
+use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -118,8 +123,22 @@ class ProfileController extends AbstractController
     public function data(Request $request, UserInterface $user): Response
     {
         $user = $this->getUser();
+        $form = $this->createForm(PasswordVerificationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $passwordverif = $form->get('passwordverif')->getData();
+            if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
+                if ($form->isSubmitted() && $form->isValid()) { 
+                    return $this->render('profile/data2.html.twig', [
+                        "user" => $user,
+                    ]);
+                }
+            }
+        }
         return $this->render('profile/data.html.twig', [
-            "user" => $user
+            "user" => $user,
+            'passwordVerif' => $form->createView(),
         ]);
     }
 
@@ -164,18 +183,45 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/suppression-de-son-compte', name: 'delete_account')]
-    public function delete_account(Request $request, UserInterface $user, UserRepository $userRepository): Response
+    public function delete_account(Request $request, UserInterface $user, UserRepository $userRepository, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $id = $user->getId();
         $data = $userRepository->findById($id)[0];
-        return $this->render("profile/delete.html.twig", ["user" => $user]);
+        $form = $this->createForm(PasswordVerificationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $passwordverif = $form->get('passwordverif')->getData();
+            if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
+                if ($form->isSubmitted() && $form->isValid()) { 
+
+                    $email = (new TemplatedEmail())
+                ->from(new Address('gruut.company@gmail.com', 'Gruut'))
+                ->to($user->getEmail())
+                ->subject('Suppression de compte')
+                ->htmlTemplate('profile/email.html.twig')
+            ;
+    
+            $mailer->send($email);
+
+                    return $this->render('profile/delete2.html.twig', [
+                        "user" => $user,
+                    ]);
+                }
+            }
+        }
+        return $this->render("profile/delete.html.twig", ["user" => $user, "passwordVerif" => $form->createView(),]);
     }
     #[Route('/suppression-de-son-compte/supprimer', name: 'delete_account_erase')]
-    public function delete_account_erase(Request $request, SessionInterface $session , TokenStorageInterface $tokenStorage , UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity): Response
+    public function delete_account_erase(Request $request, SessionInterface $session , TokenStorageInterface $tokenStorage , UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
+        $id = $user->getId(); 
+        $resetpass = $resetrepo->findByUserId($id);
+        foreach ($resetpass as $reset){
+            $resetrepo->delete($reset);
+        }
         $address = $addressRepository->findByUserId($id);
         foreach ($address as $test){
             $addressRepository->delete($test);

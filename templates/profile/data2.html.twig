@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Supprimer son compte
+{% block title %}Vos données
 {% endblock %}
 
 {% block css %}
@@ -68,23 +68,16 @@
 			</div>
 		</div>
 
-<div class="col-md-9">
+	<div class="col-md-9">
 
-	<h1 class="text-center">Supprimer son compte</h1><br>
-
-<p>Vous avez la possibilité de demander la suppression de votre compte et de vos données personnelles enregistrées chez nous. Cependant, il est important de noter que certains de ces éléments, tels que les factures, doivent être conservés en raison des obligations légales et fiscales. Nous ferons de notre mieux pour effacer toutes les données personnelles en notre possession, mais certaines peuvent être exceptionnellement conservées.</p>
+<h1 class="text-center">Vos données</h1><br>
+<p>Nous prenons la protection de vos données personnelle au sérieux. Conformément au règlement RGPD, nous voulons vous informer de la collecte, de l'utilisation et de la conservation de vos données. Vous avez le droit de savoir quelles informations nous détenons sur vous et comment nous les utilisons. Veuillez nous contacter si vous avez des questions ou des préoccupations concernant vos données.</p>
 <br>
-<p>Pour pouvoir supprimer vos données, veuillez entrez votre mot de passe.</p>
+<p>Vous pouvez télécharger vos données d'utilisateur juste en dessous.</p>
 <br>
-
-<div style="padding: 5vh;">
-			{{ form_start(passwordVerif) }}
-			{{ form_row(passwordVerif.passwordverif) }}
-			<button class="btn btn-primary" style="float:right;">Confirmez</button>
-			{{ form_end(passwordVerif) }}
-		</div>
+<a href="{{ path('profile_data_YAML_download') }}">Télécharger les données en YAML</a> -
+<a href="{{ path('profile_data_JSON_download') }}">Télécharger les données en JSON</a>
 </div>
 </div>
 
 {% endblock %}
-

@@ -2,25 +2,24 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Component;
+use App\Entity\Order;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class ComponentCrudController extends AbstractCrudController
+class OrderCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Component::class;
+        return Order::class;
     }
 
-   
+    
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('name'),
-            TextField::new('provider'),
-            IntegerField::new('quantity')            
+            DateField::new('created_at'),
+            TextField::new('user.getFullName'),
         ];
     }
     

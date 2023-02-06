@@ -7,18 +7,22 @@
 {% endblock %}
 
 {% block content %}
-	<br>
-	<br>
-	<br>
-	<br>
+	<header id="head" class="secondary" style="min-height: 80px; height:0px"></header>
+	<style>
+		.secondary {
+			background: none !important;
+		}
+	</style>
 
-	<div class="row">
+<div class="container">
+
+	<div class="row"  style="">
 <div class="col-md-4 flexbyme2">
 
 
 			<a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img class="align-self-center img" src="{{ asset('assets/images/')}}{{product.illustration}} " alt="{{ product.name }}" class="img-fluid" width="300px"></a>
 		</div>
-		<div class="col-md-7" style="height: 300px">
+		<div class="col-md-7" style="height: ">
 
 			<h1>{{product.name}}</h1>
 			<span class="product-subtitle">
@@ -28,21 +32,21 @@
 			<div class="flexbyme"></div>
 			<p>{{ product.description }}</p>
 			<h3 style="font-weight: bolder" class="product-price">
-				<span style="text-decoration: underline">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
+				<span style="text-decoration: underline">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>	
 				<a href=""></a>
 			</h3>
 			 {% if  product.stock > 0 %}
-<a class="btn-success btn click" href="{{path("cart_add", {"id" : product.id})}}">Ajouter au panier</a>
+			<a class="btn-success btn click" href="{{path("cart_add", {"id" : product.id})}}">Ajouter au panier</a>
 
 			{% else %}
 				<p  class="text-danger">Produit temporairement en rupture de stock</p>
 			{% endif %}
+
+			
 			
 		</div>
-
-
 	</div>
-
+</div>
 
 {% endblock %}
 
