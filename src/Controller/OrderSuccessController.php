@@ -38,7 +38,9 @@ class OrderSuccessController extends AbstractController
         if(!$order->getisPaid()){
             $cart->deleteAll();
             $order->setisPaid(1);
-            $entityManager->flush();        
+            $entityManager->flush();     
+            
+            
         }
         
         return $this->render('order_validate/index.html.twig', compact('order'));

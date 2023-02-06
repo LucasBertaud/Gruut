@@ -2,73 +2,49 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use App\Repository\ComponentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+#[ORM\Entity(repositoryClass: ComponentRepository::class)]
+class Component
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Categories $category = null;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $illustration = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $subtitle = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
+    #[ORM\Column(length: 255)]
+    private ?string $provider = null;
 
     #[ORM\Column]
     private ?int $stock = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ComponentProduct::class)]
+    #[ORM\ManyToMany(targetEntity: ComponentProduct::class, mappedBy: 'component')]
     private Collection $componentProducts;
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
     
     public function __construct()
     {
         $this->componentProducts = new ArrayCollection();
     }
 
-    public function __toString()
-    {
-        return $this->getName();
-    }
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCategory(): ?Categories
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Categories $category): self
-    {
-        $this->category = $category;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -79,42 +55,6 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getIllustration(): ?string
-    {
-        return $this->illustration;
-    }
-
-    public function setIllustration(string $illustration): self
-    {
-        $this->illustration = $illustration;
-
-        return $this;
-    }
-
-    public function getSubtitle(): ?string
-    {
-        return $this->subtitle;
-    }
-
-    public function setSubtitle(string $subtitle): self
-    {
-        $this->subtitle = $subtitle;
 
         return $this;
     }
@@ -131,14 +71,14 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getProvider(): ?string
     {
-        return $this->price;
+        return $this->provider;
     }
 
-    public function setPrice(float $price): self
+    public function setProvider(string $provider): self
     {
-        $this->price = $price;
+        $this->provider = $provider;
 
         return $this;
     }
@@ -167,7 +107,7 @@ class Product
     {
         if (!$this->componentProducts->contains($componentProduct)) {
             $this->componentProducts->add($componentProduct);
-            $componentProduct->setProduct($this);
+            $componentProduct->addComponent($this);
         }
 
         return $this;
@@ -176,10 +116,7 @@ class Product
     public function removeComponentProduct(ComponentProduct $componentProduct): self
     {
         if ($this->componentProducts->removeElement($componentProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($componentProduct->getProduct() === $this) {
-                $componentProduct->setProduct(null);
-            }
+            $componentProduct->removeComponent($this);
         }
 
         return $this;
