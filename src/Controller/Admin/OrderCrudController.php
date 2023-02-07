@@ -44,7 +44,7 @@ class OrderCrudController extends AbstractCrudController
             ->remove('detail', Action::DELETE);
     }
 
-    public function commandeComposants(AdminContext $admin,ProductRepository $productRepository){
+   public function commandeComposants(AdminContext $admin,ProductRepository $productRepository){
         $order = $admin->getEntity()->getInstance();
         $productOrder = [];
        
@@ -53,23 +53,20 @@ class OrderCrudController extends AbstractCrudController
              $product->getProduct() => $product->getQuantity()
             ];              
         } 
+        
      
       $componantsProducts = [];
       foreach($productOrder as $nameProduct => $item){
-        $product = $productRepository->findOneByName($nameProduct);   
-        
-         $componantsProducts += [
-             $item => ($product->getComponants()->getValues())
-        ];
+        $product = $productRepository->findOneByName($nameProduct);
+
+         $componantsProducts []  =  [
+             $item => $product->getComponants()->getValues()];            
           
       }
-
-      
-      
-      
       
       return $this->render('admin/composantsCommande.html.twig',compact('productOrder','order','componantsProducts'));
     }
+
 
     public function configureFields(string $pageName): iterable
     {
