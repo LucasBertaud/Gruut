@@ -52,7 +52,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
     public function findByUserId($id): array
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.user_id = :val')
+            ->andWhere('a.user = :val')
             ->setParameter('val', $id)
             ->getQuery()
             ->getResult();
