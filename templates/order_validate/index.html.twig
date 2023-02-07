@@ -9,18 +9,20 @@
 	<br>
 	<br>
     <div class="container">
-    <h2 class='text-center'>Confirmation de votre commande</h2>
-    <p> 
+    <h2 class='text-center' style="color:#00ac58;"><img src="{{asset('assets/images/panier.png')}}" alt="" height="50vh"> Confirmation de votre commande <img src="{{asset('assets/images/panier.png')}}" alt="" height="50vh" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"></h2>
+    <p style="font-size:16px;"> 
+    <br>
+    <br>
         Bonjour <b>{{order.user.firstname}} {{order.user.lastname}}</b>,<br><br>
         Nous vous remercions pour votre commande n°<b>{{order.reference}}</b>. <br>
         Une confirmation vient de vous être envoyer par e-mail à l'addresse <b>{{order.user.email}}</b>. <br>
         <hr>   
-    
+    <p style="font-size:16px;"> 
         Votre commande sera livré par <b>{{order.carrierName}}</b> à l'adresse suivante: <br>
         {{order.delivery | raw}} <br><br>
 
         Pour suivre votre commande rendez-vous sur votre <a href="{{path ('profile_order_follow')}}">compte</a> 
-    
+    </p>
     </p>
     </div>
 	

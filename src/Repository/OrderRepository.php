@@ -39,6 +39,16 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByUserId($id): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.user = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */

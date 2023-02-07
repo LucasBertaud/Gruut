@@ -1,0 +1,95 @@
+<style>
+
+	
+.card {
+    position: relative;
+    border-radius: 5px;
+    width: 190px;
+    height: 254px;
+    padding: .8em;
+    background: #9fd19067;
+    overflow: visible;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+   }
+
+   .card-info {
+    padding-top: 10%;
+   }
+    
+   .card-footer {
+    position: absolute;
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    bottom: 0;
+   }
+   
+   /*Text*/
+   .text-title {
+    font-weight: 900;
+    font-size: 1.2em;
+    line-height: 1.5;
+   }
+   
+   .text-body {
+    font-size: .9em;
+    padding-bottom: 10px;
+   }
+   
+   /*Button*/
+   .card-button {
+    display: flex;
+    padding: .3em;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: .3s ease-in-out;
+   }
+   
+   /*Hover*/
+   .card:hover {
+    /* transform: translateY(-5%);
+    -ms-transform: scale(1.1); /* IE 9 */
+    -webkit-transform: scale(1.1); /* Safari 3-8 */
+    transform: scale(1.1);
+    box-shadow: rgba(226, 196, 63, 0.25) 0px 13px 47px -5px, rgba(180, 71, 71, 0.3) 0px 8px 16px -8px; 
+
+   }
+   
+   .card-button:hover {
+    border: 1px solid #0AAE22;
+    background-color: #0AAE22;
+   }
+   
+   #card-button-empty:hover {
+    border: none !important;
+    background-color: unset !important;
+   }
+
+   .animationcard {
+    transform: scale(1.15);
+   }
+</style>
+
+
+<div class="card" style="height: 350px; margin:2vw; float:left;">
+	<div class="card-img"> <a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px" style="border-radius:5px; min-height:150px;" ></a></div>
+	<div class="card-info">
+		<p class="text-title" style="font-weight: 900; font-size: 1.2em; line-height: 1.5;">{{product.name}}</p>		
+		<p class="text-body" style="font-size: .9em;">{{ product.subtitle }}</p>
+	</div>
+	{% if  product.stock > 0 %}
+    <div class="card-footer">
+		<span id="price-product" class="text-title">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
+		<div class="card-button" {% if  product.stock < 1 %} id="card-button-empty" {% endif %}>						
+		    <a href="{{path("cart_add", {"id" : product.id})}}" class="click"><img src="{{asset("assets/images/group12.png")}}" alt="commander" class="blink"></a>			
+	{% else %}
+			<div class="text-danger" data-toggle="tooltip" data-placement="top"><i class="fa-solid fa-triangle-exclamation" style="font-size:25px; margin-right:1vw"></i> Rupture de stock, Désolé !</div>
+	{% endif %}
+		</div>
+	</div>
+</div>
+
+                                

@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -80,7 +81,9 @@ class OrderCrudController extends AbstractCrudController
             TextField::new('carrierName','Transporteur'),
             MoneyField::new('carrierPrice','Coût transport')->setCurrency('EUR'),
             BooleanField::new('isPaid', 'Payée'),
-            ArrayField::new('getOrderDetails', 'Produits')->hideOnIndex()
+            ArrayField::new('getOrderDetails', 'Produits')->hideOnIndex(),
+            DateField::new('billing_date', 'Facture du '),
+            UrlField::new('bill', 'facture')
         ];
     }
     

@@ -47,8 +47,8 @@
 						</div> #}
 
 
-						<div class="card col-md-3" style="height: 350px; margin:2vw; float:left;">
-							<div class="card-img"> <a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px" style="border-radius:5px; min-height:150px;" ></a></div>
+						<div class="" style="height: 350px; margin:2vw; float:left;">
+							{# <div class="card-img"> <a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px" style="border-radius:5px; min-height:150px;" ></a></div>
 								<div class="card-info">
 									<p class="text-title">{{product.name}}</p>		
 									<p class="text-body">{{ product.subtitle }}</p>
@@ -63,7 +63,9 @@
 											<div class="text-danger" data-toggle="tooltip" data-placement="top"><i class="fa-solid fa-triangle-exclamation" style="font-size:25px; margin-right:1vw"></i> Rupture de stock, Désolé !</div>
 										{% endif %}
 									</div>
-								</div>
+								</div> #}
+
+								{% include 'product/single.html.twig'%}
 						</div>
 						{# <div class="flexbyme ">
 							<h3 style="font-weight: bolder" class="product-price">

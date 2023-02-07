@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil
+{% block title %}Factures
 {% endblock %}
 
 {% block css %}
@@ -25,7 +25,7 @@
 		}
 	</style>
 	<div class="row">
-				<div class="col-md-3 text-center" style="background-color: #EDEDED; border-right: 2px solid #898989">
+		<div class="col-md-3 text-center" style="background-color: #EDEDED; border-right: 2px solid #898989">
 			<div class="left-profile-container">
 				<img src="{{ asset("assets/images/profil_img.png") }}" alt="">
 				<h1 class="profileName">{{user.firstname}}
@@ -34,53 +34,56 @@
 			<h3 class="profileDiv">Compte</h3>
 			<br>
 			<div class="my-profile btn btn-block center-block" style="background: #F4F8FF; width: 20vw;height: 64px; line-height: 8vh; ">
-				<a href="{{path('profile_index')}}" class=""><i class="fa-regular fa-id-badge" style=" margin-right:1vw;"></i>Votre profil </a>
+				<a href="{{path("profile_index")}}" class=""><i class="fa-regular fa-id-badge" style=" margin-right:1vw;"></i>Votre profil </a>
 			</div>
 			<br>
 			<div class="my-adress btn btn-block center-block" style="background: #F4F8FF;  width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('address_recap')}}"><i class="fa-solid fa-box" style=" margin-right:1vw;"></i>Vos adresses</a>
+				<a href="{{path("address_recap")}}"><i class="fa-solid fa-box" style=" margin-right:1vw;"></i>Vos adresses</a>
 			</div>
 			<br>
 			<div class="my-data btn btn-block center-block" style="background: #F4F8FF;  width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('profile_data')}}"><i class="fa-solid fa-database" style=" margin-right:1vw;"></i>Vos données</a>
-			</div>
+				<a href="{{path("profile_data")}}"><i class="fa-solid fa-database" style=" margin-right:1vw;"></i>Vos données</a>
+			</div><br>
 			<div class="my-data btn btn-block center-block" style="background: #F4F8FF; margin-bottom:5vh; width: 20vw; height: 64px; line-height: 8vh;">
-				<a href="{{path('profile_delete_account')}}"><i class="fa-solid fa-trash" style=" margin-right:1vw;"></i>Supprimer son compte</a>
+				<a href="{{path("profile_delete_account")}}"><i class="fa-solid fa-trash" style=" margin-right:1vw;"></i>Supprimer son compte</a>
 					
 			</div>
 
 
-			<h3 class="profileDiv">Achats</h3>
+			<h3 class="profileDiv">Achats</h3> <br>
 			<div class="my-order btn btn-block center-block" style="background: #F4F8FF; width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('profile_order_follow')}}"><i class="fa-solid fa-basket-shopping" style=" margin-right:1vw;"></i>Commandes et suivis </a>
-			</div>
+				<a href="{{path("profile_order_follow")}}"><i class="fa-solid fa-basket-shopping" style=" margin-right:1vw;"></i>Commandes et suivis </a>
+			</div><br>
 			<div class="bill btn btn-block center-block" style="background: #F4F8FF; margin-bottom:5vh;  width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('profile_bill')}}">
+				<a href="{{path("profile_bill")}}">
 				<i class="fa-solid fa-file-invoice" style=" margin-right:1vw;"></i>
 				Factures	</a>
 			</div>
 			<div class="profileDiv">
 				<div class="log-out btn btn-block center-block" style="background: #F4F8FF; margin-bottom:5vh;  margin-top:3vh;  width: 20vw;height: 64px; line-height: 8vh;">
 					
-					<a href="{{path('app_logout')}}"><i class="fa-solid fa-power-off" style=" margin-right:1vw;"></i> Se déconnecter</a>
+					<a href="{{path("app_logout")}}"><i class="fa-solid fa-power-off" style=" margin-right:1vw;"></i> Se déconnecter</a>
 				</div>
 			</div>
 		</div>
 
 		<div class="col-md-9 text-center">
-			<h1 style="margin-bottom: 5vh;">Commandes et suivis</h1>
+			<h1 style="margin-bottom: 5vh;">Factures</h1>
+			<hr>
+			<div class="row">
+			{% for bill in bills %}
+			{% if bill[0] is defined and bill[0] is not empty %}
+				<div class="col-md-6">
+						<p>Facture n° :</p> 	<a download href="{{asset(bill[0])}}?random={{random}}">Facture {{bill[1]}} </a>
+					</div>
+					{% else %}
+				{% endif %}
+			{% endfor %}
+					
 
-            <div class="panel panel-default col-md-6">
-					<div class="panel-heading">Commande n° </div>
-					<div class="panel-body">
-                        Nom, Prenom
-                        adresses
-                        numero de tel
-                    </div>
-                        
-					<div class="panel-footer">livrée par  </div>
+				</div>
+			<hr>
 
-            </div>        
 		</div>
 	</div>
 {% endblock %}

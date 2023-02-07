@@ -7,6 +7,7 @@ use App\Entity\Address;
 use App\Entity\Product;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,12 +33,25 @@ class OrderSuccessController extends AbstractController
      EntityManagerInterface $entityManager,  
      Cart $cart,
      MailerInterface $mailer,
+     \Knp\Snappy\Pdf $knpSnappyPdf,
      ): Response
     {
+        $date = new DateTimeImmutable();
+        $datePDF = date('d-m-y');
         $user = $this->getUser();
-
         $order = $orderRepository->findOneByStripeSessionId($stripeSessionId);
-
+        $id = $user->getId();
+        $orderId = $order->getId();
+        $orderDelivery = $order->getDelivery();
+        $deliveryArray = explode("<br>", $orderDelivery);
+        $productItems = $order->getOrderDetails()->getValues();
+        $carrierPrice = $order->getCarrierPrice() / 100;
+        $total = null;
+        foreach ($productItems as $product) {
+            $total += ($product->getPrice() * $product->getQuantity()) / 100;
+        }
+        $totalCarrier = $total + $carrierPrice;
+        
         if(!$order || $order->getUser() != $this->getUser()){
             return $this->redirectToRoute('app_home');
                 }
@@ -52,7 +66,7 @@ class OrderSuccessController extends AbstractController
         if(!$order->getisPaid()){
             $cart->deleteAll();
             $order->setisPaid(1);
-            $entityManager->flush();     
+                 
             
             $email = (new TemplatedEmail())
             ->from(new MimeAddress('gruut.company@gmail.com', 'Gruut'))
@@ -60,10 +74,27 @@ class OrderSuccessController extends AbstractController
             ->subject('Confirmation de commande')
             ->htmlTemplate('order_validate/email.html.twig')
             ->context(['order' => $orderRepository->findOneByStripeSessionId($stripeSessionId) ])
-            
         ;
 
         $mailer->send($email);
+
+        
+
+        $html = $this->renderView('profile/bill.html.twig', array(
+            'user'  => $user,
+            'orderDelivery' => $deliveryArray,
+            'products' => $productItems,
+            'order' => $order,
+            'date' => $datePDF,
+            'total' => $total,
+            'totalCarrier' => $totalCarrier,
+        ));
+        $namepdf = "facture_$orderId.pdf";
+        $pathpdf = "assets/pdf/$namepdf";
+        $knpSnappyPdf->generateFromHtml($html, $pathpdf);
+        $order->setBill($pathpdf);
+        $order->setBillingDate($date);
+        $entityManager->flush();
         }
         
         return $this->render('order_validate/index.html.twig', compact('order'));

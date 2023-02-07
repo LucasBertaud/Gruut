@@ -44,6 +44,11 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Componants::class)]
     private Collection $componants;
 
+
+    #[ORM\Column]
+    private ?bool $isBest = null;
+      
+
     public function __construct()
     {
         $this->componants = new ArrayCollection();
@@ -183,6 +188,18 @@ class Product
                 $componant->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsBest(): ?bool
+    {
+        return $this->isBest;
+    }
+
+    public function setIsBest(bool $isBest): self
+    {
+        $this->isBest = $isBest;
 
         return $this;
     }

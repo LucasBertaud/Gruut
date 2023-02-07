@@ -7,6 +7,7 @@ use App\Form\ChangePasswordConnectedFormType;
 use App\Form\ChangeProfileType;
 use App\Form\PasswordVerificationType;
 use App\Repository\AddressRepository;
+use App\Repository\OrderRepository;
 use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -266,20 +267,17 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/facture', name: 'bill')]
-    public function bill(Request $request, UserInterface $user, UserRepository $userRepository, \Knp\Snappy\Pdf $knpSnappyPdf): Response
+    public function bill_page(Request $request, UserInterface $user, UserRepository $userRepository, \Knp\Snappy\Pdf $knpSnappyPdf, OrderRepository $orderRepository): Response
     {
         $user = $this->getUser();
+        $random = random_bytes(10);
         $id = $user->getId();
-        $data = $userRepository->findById($id)[0];
-
-
-        $html = $this->renderView('profile/order_follow.html.twig', array(
-            'user'  => $user
-        ));
-
-        return new PdfResponse(
-            $knpSnappyPdf->getOutputFromHtml($html),
-            'facture.pdf'
-        );
+        $order = $orderRepository->findByUserId($id);
+        $bill = [];
+        foreach ($order as $orderBill) {
+           $bill[] = [$orderBill->getBill(), $orderBill->getId()];
+        }
+        $bytes = (bin2hex($random));
+        return $this->render("profile/bill_page.html.twig", ["user" => $user, "id" => $id, 'bills' => $bill, 'random' => $bytes]);
     }
 }
