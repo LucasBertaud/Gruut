@@ -8,6 +8,19 @@
 	</header>
 	<!-- /Header -->
 
+
+	<style>
+
+		.row1 {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-content: center;
+			justify-content: center;
+			align-items: center;
+		}
+	</style>
+
 	<!-- Intro -->
 	<div class="container text-center">
 		<br> <br>
@@ -21,36 +34,18 @@
 	<!-- Highlights - jumbotron -->
 	<div class="jumbotron top-space">
 		<div class="container">
-			
-			<h3 class="text-center thin">Nos meilleurs produits</h3>
-			
-			<div class="row">
-				<div class="col-md-3 col-sm-6 highlight">
-					<div class="h-caption"><h4><i class="fa fa-cogs fa-5"></i>Bootstrap-powered</h4></div>
-					<div class="h-body text-center">
-						
-					</div>
-				</div>
-				<div class="col-md-3 col-sm-6 highlight">
-					<div class="h-caption"><h4><i class="fa fa-flash fa-5"></i>Fat-free</h4></div>
-					<div class="h-body text-center">
-						
-					</div>
-				</div>
-				<div class="col-md-3 col-sm-6 highlight">
-					<div class="h-caption"><h4><i class="fa fa-heart fa-5"></i>Creative Commons</h4></div>
-					<div class="h-body text-center">
-						
-					</div>
-				</div>
-				<div class="col-md-3 col-sm-6 highlight">
-					<div class="h-caption"><h4><i class="fa fa-smile-o fa-5"></i>Author's support</h4></div>
-					<div class="h-body text-center">
-						
-					</div>
-				</div>
-			</div> <!-- /row  -->
-		
+					<h3 class="text-center thin">Nos meilleurs produits</h3>		
+					<div class="container">
+						<div class="row" style="flex-wrap: wrap; justify-content: center; display:flex;">
+								{% for product in products %}
+									{% include 'product/single.html.twig'%}
+								{% endfor %}
+						</div>	
+					</div><br>
+				
+	</div>
+	<p class="text-right"><a href="{{ path("category_index")}}" class="btn btn-primary btn-large" style="margin-right: 5vw;">Voir plus »</a></p>
+</div> <!-- /row  -->
 		</div>
 	</div>
 	<!-- /Highlights -->
@@ -76,7 +71,7 @@
 
 		<div class="jumbotron top-space">
 			<h4>Dicta, nostrum nemo soluta sapiente sit dolor quae voluptas quidem doloribus recusandae facere magni ullam suscipit sunt atque rerum eaque iusto facilis esse nam veniam incidunt officia perspiciatis at voluptatibus. Libero, aliquid illum possimus numquam fuga.</h4>
-     		<p class="text-right"><a class="btn btn-primary btn-large">Learn more »</a></p>
+     		<p class="text-right"><a href="{{ path("app_about")}}" class="btn btn-primary btn-large">A propos de nous »</a></p>
   		</div>
 
 </div>	<!-- /container -->

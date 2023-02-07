@@ -44,6 +44,9 @@ class Product
     #[ORM\ManyToMany(targetEntity: Component::class, inversedBy: 'products')]
     private Collection $component;
 
+    #[ORM\Column]
+    private ?bool $isBest = null;
+
       
     public function __construct()
     {
@@ -175,6 +178,18 @@ class Product
     public function removeComponent(Component $component): self
     {
         $this->component->removeElement($component);
+
+        return $this;
+    }
+
+    public function isIsBest(): ?bool
+    {
+        return $this->isBest;
+    }
+
+    public function setIsBest(bool $isBest): self
+    {
+        $this->isBest = $isBest;
 
         return $this;
     }

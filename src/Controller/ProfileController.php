@@ -267,21 +267,17 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/facture', name: 'bill')]
-    public function bill(Request $request, UserInterface $user, UserRepository $userRepository, \Knp\Snappy\Pdf $knpSnappyPdf, OrderRepository $orderRepository): Response
+    public function bill_page(Request $request, UserInterface $user, UserRepository $userRepository, \Knp\Snappy\Pdf $knpSnappyPdf, OrderRepository $orderRepository): Response
     {
         $user = $this->getUser();
+        $random = random_bytes(10);
         $id = $user->getId();
         $order = $orderRepository->findByUserId($id);
-        $orderDelivery = $order[0]->getDelivery();
-        $deliveryArray = explode("<br>", $orderDelivery);
-        $html = $this->renderView('profile/bill.html.twig', array(
-            'user'  => $user,
-            'order' => $deliveryArray,
-        ));
-
-        return new PdfResponse(
-            $knpSnappyPdf->getOutputFromHtml($html),
-            'facture.pdf'
-        );
+        $bill = [];
+        foreach ($order as $orderBill) {
+           $bill[] = [$orderBill->getBill(), $orderBill->getId()];
+        }
+        $bytes = (bin2hex($random));
+        return $this->render("profile/bill_page.html.twig", ["user" => $user, "id" => $id, 'bills' => $bill, 'random' => $bytes]);
     }
 }

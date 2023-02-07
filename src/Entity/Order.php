@@ -213,12 +213,12 @@ class Order
         return $this;
     }
 
-    public function getBillingDate(): ?string
+    public function getBillingDate(): ?\DateTimeImmutable
     {
         return $this->billing_date;
     }
 
-    public function setBillingDate(?string $billing_date): self
+    public function setBillingDate(\DateTimeImmutable $billing_date): self
     {
         $this->billing_date = $billing_date;
 
