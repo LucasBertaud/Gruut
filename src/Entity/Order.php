@@ -46,6 +46,12 @@ class Order
     #[ORM\Column]
     private ?bool $isPaid = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bill = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?\DateTimeImmutable $billing_date = null;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -179,6 +185,30 @@ class Order
     public function setIsPaid(bool $isPaid): self
     {
         $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getBill(): ?string
+    {
+        return $this->bill;
+    }
+
+    public function setBill(?string $bill): self
+    {
+        $this->bill = $bill;
+
+        return $this;
+    }
+
+    public function getBillingDate(): ?string
+    {
+        return $this->billing_date;
+    }
+
+    public function setBillingDate(?string $billing_date): self
+    {
+        $this->billing_date = $billing_date;
 
         return $this;
     }

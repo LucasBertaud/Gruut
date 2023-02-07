@@ -20,6 +20,8 @@ class OrderCrudController extends AbstractCrudController
         return [
             DateField::new('created_at'),
             TextField::new('user.getFullName'),
+            DateField::new('billing_date'),
+            
         ];
     }
     

@@ -7,6 +7,7 @@ use App\Form\ChangePasswordConnectedFormType;
 use App\Form\ChangeProfileType;
 use App\Form\PasswordVerificationType;
 use App\Repository\AddressRepository;
+use App\Repository\OrderRepository;
 use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -266,15 +267,16 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/facture', name: 'bill')]
-    public function bill(Request $request, UserInterface $user, UserRepository $userRepository, \Knp\Snappy\Pdf $knpSnappyPdf): Response
+    public function bill(Request $request, UserInterface $user, UserRepository $userRepository, \Knp\Snappy\Pdf $knpSnappyPdf, OrderRepository $orderRepository): Response
     {
         $user = $this->getUser();
         $id = $user->getId();
-        $data = $userRepository->findById($id)[0];
-
-
-        $html = $this->renderView('profile/order_follow.html.twig', array(
-            'user'  => $user
+        $order = $orderRepository->findByUserId($id);
+        $orderDelivery = $order[0]->getDelivery();
+        $deliveryArray = explode("<br>", $orderDelivery);
+        $html = $this->renderView('profile/bill.html.twig', array(
+            'user'  => $user,
+            'order' => $deliveryArray,
         ));
 
         return new PdfResponse(

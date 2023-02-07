@@ -4,15 +4,16 @@
 
 {% block content %}
 <br><br><br><br><br>
-<main class="container" style="min-height:100vh;">
-<h2 class='text-center'>Erreur de votre commande</h2><br>
-    <p> 
+<main class="container" style="min-height: 100vh;">
+    <h2 class='text-center' style="color: #e90000;"><img src="{{asset('assets/images/expedition.png')}}" alt="" height="50vh"> Erreur de votre commande <img src="{{asset('assets/images/expedition.png')}}" alt="" height="50vh"></h2>
+    <br>
+    <p style="font-size: 16px;"> 
         Bonjour <b>{{order.user.firstname}} {{order.user.lastname}}</b>,<br><br>
         Nous vous signalons un problème de paiement pour votre commande n°<b>{{order.reference}}</b>. <br>
         Une confirmation de cette erreur vient de vous être envoyer par e-mail à l'addresse <b>{{order.user.email}}</b>. <br>
         <hr>
 
-        <a href="{{path ('order_index')}}" class="btn btn-success">Réésayer le paiement</a> 
+        <a href="{{path ('order_index')}}" class="btn btn-success">Réésayer le paiement</a> <br>
     
     </p>
 </main>
