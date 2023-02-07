@@ -67,6 +67,25 @@
 				<div
 					class="navbar-header">
 					<!-- Button for smallest screens -->
+					<div class="responsive-cart" style="display: none;">
+						{% if quantity.getQuantity() > 0 %}
+									<div class="item" style="float:right;">								
+										<a href="{{ path("cart_index")}}">
+											<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+											<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+										</a>
+									</div>
+									<p></p>
+								{% else %}
+									<div class="item" style="float:right;">								
+										<a href="{{ path("cart_index")}}">
+											<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+											<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+										</a>
+									</div>
+									<p></p>
+						{% endif %}   
+					</div>
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -74,15 +93,19 @@
 					</button>
 					<a class="navbar-brand" href="{{ path('app_home') }}" style="padding:4vh;"><img src="{{asset('assets/images/Gruut.svg')}}" alt="Progressus HTML5 template" class="img-responsive " style="width: 185px;"></a>
 				</div>
+						
+				
+				
 				<div class="navbar-collapse collapse">
 
-							{% if quantity.getQuantity() > 0 %}
+				<div class="nav-cart">
+					{% if quantity.getQuantity() > 0 %}
 								<div class="item" style="float:right;">								
 									<a href="{{ path("cart_index")}}">
 										<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
 										<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
 									</a>
-								 </div>
+								</div>
 								<p></p>
 							{% else %}
 								<div class="item" style="float:right;">								
@@ -90,20 +113,19 @@
 										<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
 										<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
 									</a>
-								 </div>
-								 <p></p>
-						{% endif %}   
-
-
+								</div>
+								<p></p>
+					{% endif %}   
+				</div>
+				
 					<ul class="nav navbar-nav pull-right">
+					<br>
 						<li>
-							<a href="{{ path("category_index") }}">Nos produits</a>
+							<a class="btn" href="{{ path("category_index") }}">Nos produits</a>
 							<div class="underline"></div>
 						</li>
-
-
 						<li>
-							<a href="{{ path("app_contact") }}">Contact</a>
+							<a class="btn" href="{{ path("app_contact") }}">Contact</a>
 						</li>
 						{% if app.user %}
 							<li>
@@ -120,10 +142,6 @@
 								<a class="btn" href="{{ path("app_register") }}">Inscription</a>
 							</li>
 						{% endif %}
-						<li>
-
-
-						</li>
 					</ul>
 							 
 

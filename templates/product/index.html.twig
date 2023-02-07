@@ -54,12 +54,13 @@
 									<p class="text-body">{{ product.subtitle }}</p>
 								</div>
 								<div class="card-footer">
-									<span class="text-title">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
+								{% if  product.stock > 0 %}
+									<span id="price-product" class="text-title">{{ (product.price / 100) |number_format(2, ",",".") }}€</span>
 									<div class="card-button" {% if  product.stock < 1 %} id="card-button-empty" {% endif %}>
-										{% if  product.stock > 0 %}
+										
 											<a href="{{path("cart_add", {"id" : product.id})}}" class="click"><img src="{{asset("assets/images/group12.png")}}" alt="commander" class="blink"></a>			
 										{% else %}
-											<div class="text-danger" data-toggle="tooltip" data-placement="top"><i class="fa-solid fa-triangle-exclamation" style="font-size:25px"></i></div>
+											<div class="text-danger" data-toggle="tooltip" data-placement="top"><i class="fa-solid fa-triangle-exclamation" style="font-size:25px; margin-right:1vw"></i> Rupture de stock, Désolé !</div>
 										{% endif %}
 									</div>
 								</div>

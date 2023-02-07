@@ -124,6 +124,19 @@ img.pull-left { margin-right: 10px; }
 	   @media (max-width:300px) {
 		.navbar-brand{
 			padding: 2vh !important;
+			}
+			.item{
+				display: block !important;
+				}
 		}
-		
-	}
+		@media (max-width:767px) {
+			.item{
+				display: none !important;
+				}
+
+			ul.nav.navbar-nav.pull-right {
+			  display: block !important;
+			  float: none !important;
+			  width: 100% !important;
+			}
+		}

@@ -87,14 +87,14 @@
     transform: scale(1.15);
    }
    
-    .text-danger:hover:after{
+    /* .text-danger:hover:after{
        position: absolute;
        width: 20vw;
        z-index: 1;
        content: "Produit en rupture de stock, déso !";
        background-color: rgb(231, 231, 231);
        border-radius: 5px;
-   } 
+   }  */
 
 
 

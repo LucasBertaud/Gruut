@@ -129,7 +129,7 @@ class ProfileController extends AbstractController
         if ($form->isSubmitted()) {
             $passwordverif = $form->get('passwordverif')->getData();
             if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
-                if ($form->isSubmitted() && $form->isValid()) { 
+                if ($form->isSubmitted() && $form->isValid()) {
                     return $this->render('profile/data2.html.twig', [
                         "user" => $user,
                     ]);
@@ -174,7 +174,7 @@ class ProfileController extends AbstractController
         $yamlData = $serializer->serialize($data, 'yaml', [
             AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'addresses', 'orders', 'password', 'id', 'userIdentifier']
         ]);
-       
+
         $response = new Response($yamlData);
         $response->headers->set('Content-Type', 'application/yaml');
         $response->headers->set('Content-Disposition', 'attachment;filename="user_' . $id . '.yaml"');
@@ -194,16 +194,21 @@ class ProfileController extends AbstractController
         if ($form->isSubmitted()) {
             $passwordverif = $form->get('passwordverif')->getData();
             if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
-                if ($form->isSubmitted() && $form->isValid()) { 
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $token = bin2hex(random_bytes(32));
+                    $user->setToken($token);
+                    $this->entityManager->persist($user);
+                    $this->entityManager->flush();
 
                     $email = (new TemplatedEmail())
-                ->from(new Address('gruut.company@gmail.com', 'Gruut'))
-                ->to($user->getEmail())
-                ->subject('Suppression de compte')
-                ->htmlTemplate('profile/email.html.twig')
-            ;
-    
-            $mailer->send($email);
+                        ->from(new Address('gruut.company@gmail.com', 'Gruut'))
+                        ->to($user->getEmail())
+                        ->subject('Suppression de compte')
+                        ->htmlTemplate('profile/email.html.twig')
+                        ->context(["token" => $token]);
+
+
+                    $mailer->send($email);
 
                     return $this->render('profile/delete2.html.twig', [
                         "user" => $user,
@@ -214,25 +219,40 @@ class ProfileController extends AbstractController
         return $this->render("profile/delete.html.twig", ["user" => $user, "passwordVerif" => $form->createView(),]);
     }
     #[Route('/suppression-de-son-compte/supprimer', name: 'delete_account_erase')]
-    public function delete_account_erase(Request $request, SessionInterface $session , TokenStorageInterface $tokenStorage , UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo): Response
+    public function delete_account_erase(Request $request, SessionInterface $session, TokenStorageInterface $tokenStorage, UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo): Response
     {
+
         $user = $this->getUser();
-        $id = $user->getId(); 
-        $resetpass = $resetrepo->findByUserId($id);
-        foreach ($resetpass as $reset){
-            $resetrepo->delete($reset);
-        }
-        $address = $addressRepository->findByUserId($id);
-        foreach ($address as $test){
-            $addressRepository->delete($test);
-        }
-        $entity->remove($user);
-        $entity->flush();
+        $fromEmail = $request->query->get('token');
+        if ($fromEmail != null) {
+        if ($fromEmail == $user->getToken()) {
+            
+            $id = $user->getId();
+            $resetpass = $resetrepo->findByUserId($id);
+            foreach ($resetpass as $reset) {
+                $resetrepo->delete($reset);
+            }
+            $address = $addressRepository->findByUserId($id);
+            foreach ($address as $test) {
+                $addressRepository->delete($test);
+            }
+            $entity->remove($user);
+            $entity->flush();
 
-        $tokenStorage->setToken(null);
-        $session->invalidate();
+            $tokenStorage->setToken(null);
+            $user->setToken(null);
+            $session->invalidate();
 
-        return $this->redirectToRoute("app_logout" );
+            return $this->redirectToRoute("app_logout");
+        }
+
+        else {
+            return $this->redirectToRoute("profile_index");
+        }
+        }
+        else {
+            return $this->redirectToRoute("profile_index");
+        }
     }
 
     #[Route('/commandes-et-suivis', name: 'order_follow')]
