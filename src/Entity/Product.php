@@ -47,8 +47,7 @@ class Product
       
     public function __construct()
     {
-        $this->componentProducts = new ArrayCollection();
-        $this->component = new ArrayCollection();
+       $this->component = new ArrayCollection();
     }
 
     public function __toString()
