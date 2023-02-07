@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -51,6 +52,17 @@ class Order
         $this->orderDetails = new ArrayCollection();
     }
 
+    public function getTotalProduct()
+    {
+        $total = 0;
+        foreach($this->getOrderDetails()->getValues() as $product)
+        {
+            $total += $product->getPrice() * $product->getQuantity();
+            
+        };
+                
+        return $total;
+    }
     public function getId(): ?int
     {
         return $this->id;
