@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Component;
+use App\Entity\Componants;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Component>
+ * @extends ServiceEntityRepository<Componants>
  *
- * @method Component|null find($id, $lockMode = null, $lockVersion = null)
- * @method Component|null findOneBy(array $criteria, array $orderBy = null)
- * @method Component[]    findAll()
- * @method Component[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Componants|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Componants|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Componants[]    findAll()
+ * @method Componants[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ComponentRepository extends ServiceEntityRepository
+class ComponantsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Component::class);
+        parent::__construct($registry, Componants::class);
     }
 
-    public function save(Component $entity, bool $flush = false): void
+    public function save(Componants $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class ComponentRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Component $entity, bool $flush = false): void
+    public function remove(Componants $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class ComponentRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Component[] Returns an array of Component objects
+//     * @return Componants[] Returns an array of Componants objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class ComponentRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Component
+//    public function findOneBySomeField($value): ?Componants
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

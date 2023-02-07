@@ -46,21 +46,26 @@ class OrderCrudController extends AbstractCrudController
     public function commandeComposants(AdminContext $admin,ProductRepository $productRepository){
         $order = $admin->getEntity()->getInstance();
         $productOrder = [];
-        $productQuantity = [];
+       
         foreach($order->getOrderDetails()->getValues() as $product){            
         $productOrder += [            
              $product->getProduct() => $product->getQuantity()
-            ]; 
-        $productQuantity  += array($product->getQuantity()); 
-        dd($productQuantity);      
+            ];              
         } 
      
       $componantsProducts = [];
       foreach($productOrder as $nameProduct => $item){
-        $product = $productRepository->findOneByName($nameProduct);        
-        $componantsProducts  += [            
-            $product->getName() => $product->getComponent()->getValues()];
-      }    
+        $product = $productRepository->findOneByName($nameProduct);   
+        
+         $componantsProducts += [
+             $item => ($product->getComponants()->getValues())
+        ];
+          
+      }
+
+      
+      
+      
       
       return $this->render('admin/composantsCommande.html.twig',compact('productOrder','order','componantsProducts'));
     }

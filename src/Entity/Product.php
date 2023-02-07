@@ -41,14 +41,16 @@ class Product
     #[ORM\Column]
     private ?int $stock = null;
 
-    #[ORM\ManyToMany(targetEntity: Component::class, inversedBy: 'products')]
-    private Collection $component;
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Componants::class)]
+    private Collection $componants;
 
-      
     public function __construct()
     {
-       $this->component = new ArrayCollection();
+        $this->componants = new ArrayCollection();
     }
+
+      
+  
 
     public function __toString()
     {
@@ -156,28 +158,35 @@ class Product
     }
 
     /**
-     * @return Collection<int, Component>
+     * @return Collection<int, Componants>
      */
-    public function getComponent(): Collection
+    public function getComponants(): Collection
     {
-        return $this->component;
+        return $this->componants;
     }
 
-    public function addComponent(Component $component): self
+    public function addComponant(Componants $componant): self
     {
-        if (!$this->component->contains($component)) {
-            $this->component->add($component);
+        if (!$this->componants->contains($componant)) {
+            $this->componants->add($componant);
+            $componant->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeComponent(Component $component): self
+    public function removeComponant(Componants $componant): self
     {
-        $this->component->removeElement($component);
+        if ($this->componants->removeElement($componant)) {
+            // set the owning side to null (unless already changed)
+            if ($componant->getProduct() === $this) {
+                $componant->setProduct(null);
+            }
+        }
 
         return $this;
     }
 
+    
     
 }

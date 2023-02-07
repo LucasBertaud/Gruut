@@ -6,46 +6,39 @@
 <main class="container">
 <h2 class='text-center'>Récapitulation de la commande du client {{order.getuser().getFullName()}}</h2> <br>
 <h4>Référence client : {{order.getReference()}} </h4>
-<table class='table'>
+<table class='table table-bordered'>
     <tr >
         <th class='text-center'>Nom du produit</th>
-        <th class='text-center'>Nombre de produit</th>
-                
-    </tr> 
-{% for nameProduct,quantity in productOrder %}
+        <th class='text-center'>Nombre de produit</th>                      
+    </tr>
     <tr>
-        <td class='text-center' >{{nameProduct}}</td>
-        <td class='text-center'>{{ quantity }}</td>
-    </tr>          
-{% endfor %}
-
-</table>
-
-<h3>Composants à commander pour cette commande</h3>
+    {% for nameProduct,quantity in productOrder %}
+            <td class='text-center'>{{nameProduct}}</td>
+            <td class='text-center'>{{quantity}}</td>
+    </tr>
+    {% endfor %}
+     
+     </table>
+     
+<h4 class='text-center'>Composants à commander pour cette commande</h4>
 
 <table class='table table-bordered'> 
     <tr>
         <th class='text-center'>Nom du produit</th> 
-        <th class='text-center'>Composition</th>
-    </tr> 
+        <th class='text-center'>Nom du composant</th>
+        <th class='text-center'>Quantité du composant</th>       
+    </tr>    
+   
+    {% for quantity,componants in componantsProducts %}
+            <tr>
+            {% for componant in componants %}
+                <td class='text-center'>{{componant.getProduct().getName()}}</td>
+                <td class='text-center'>{{componant.getName()}}</td>
+                <td class='text-center'>{{componant.getQuantity() * quantity}}</td> 
+                </tr>
+            {% endfor %}  
         
-{% for nameProduct,componants in componantsProducts %}
-    <tr>
-        <td class='text-center'>{{nameProduct}}</td>  
-        <td class='text-center'>
-        {% for componant in componants %}        
-            [{{componant.name}}]  /Quantité => ({{componant.quantity}}) <br>              
-        {% endfor %}
-        </td>
-    </tr> 
-        
-    
-{% endfor %}
+    {% endfor %}        
 </table>
-
 </main>
-
-
-
-
 {% endblock %}
