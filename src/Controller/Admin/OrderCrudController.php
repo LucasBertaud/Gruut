@@ -64,10 +64,6 @@ class OrderCrudController extends AbstractCrudController
           
       }
 
-      
-      
-      
-      
       return $this->render('admin/composantsCommande.html.twig',compact('productOrder','order','componantsProducts'));
     }
 

@@ -31,6 +31,9 @@
    
     {% for quantity,componants in componantsProducts %}
             <tr>
+            <pre>
+                {{ dump(componantsProducts) }}
+            </pre>
             {% for componant in componants %}
                 <td class='text-center'>{{componant.getProduct().getName()}}</td>
                 <td class='text-center'>{{componant.getName()}}</td>
