@@ -54,7 +54,7 @@
 						<table width='100%' cellspacing='0' cellpadding='2' border='1' bordercolor='#CCCCCC'>
 							<tr>
 
-								<td width='35%' bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'>
+								<td class="text-center" width='35%' bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'>
 									<strong>Désignation
 									</strong>
 								</td>
@@ -73,9 +73,9 @@
 								<td colspan="*">
 
 									{% for product in products %}
-										<tr>
+										<tr >
 
-											<td valign='top' style='font-size:12px;'>{{product.product}}</td>
+											<td class="text-center" valign='top' style='font-size:12px;'>{{product.product}}</td>
 											<td valign='top' style='font-size:12px;'>{{product.quantity}}
 											</td>
 											<td valign='top' style='font-size:12px;'>{{(product.price /100) |number_format(2, ',','.') }}

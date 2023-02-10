@@ -43,7 +43,7 @@ class OrderSuccessController extends AbstractController
         $id = $user->getId();
         $orderId = $order->getId();
         $orderDelivery = $order->getDelivery();
-        $deliveryArray = explode("<br>", $orderDelivery);
+        $deliveryArray = explode("<br>", $orderDelivery);      
         $productItems = $order->getOrderDetails()->getValues();
         $carrierPrice = $order->getCarrierPrice() / 100;
         $total = null;
@@ -69,7 +69,7 @@ class OrderSuccessController extends AbstractController
                  
             
             $email = (new TemplatedEmail())
-            ->from(new MimeAddress('gruut.company@gmail.com', 'Gruut'))
+            ->from(new MimeAddress('gruut.company1@gmail.com', 'Gruut'))
             ->to($user->getEmail())
             ->subject('Confirmation de commande')
             ->htmlTemplate('order_validate/email.html.twig')

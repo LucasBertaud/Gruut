@@ -39,6 +39,15 @@ class OrderDetailsRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByOrderId($orderid): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.my_order = :val')
+            ->setParameter('val', $orderid)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return OrderDetails[] Returns an array of OrderDetails objects
 //     */

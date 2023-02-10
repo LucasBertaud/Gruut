@@ -24,6 +24,8 @@
 			align-items: center;
 		}
 
+		
+
 	</style>
 
 <div class="container">
@@ -32,9 +34,10 @@
 			<h1 class="text-center">Catégorie
 				<br>{{categories.name}}
 			</h1>
+			
 			<div class="row1 row" style="margin-top:5vh;">
 				{% for product in categories.products %}
-
+				
 					{# <div class="col-md-4" style="height: 350px">
 						<a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px"></a>
 
@@ -47,7 +50,7 @@
 						</div> #}
 
 
-						<div class="" style="height: 350px; margin:2vw; float:left;">
+						<div class="col-md-3" style="height: 350px; margin:1vw; float:left;">
 							{# <div class="card-img"> <a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px" style="border-radius:5px; min-height:150px;" ></a></div>
 								<div class="card-info">
 									<p class="text-title">{{product.name}}</p>		
@@ -62,8 +65,8 @@
 										{% else %}
 											<div class="text-danger" data-toggle="tooltip" data-placement="top"><i class="fa-solid fa-triangle-exclamation" style="font-size:25px; margin-right:1vw"></i> Rupture de stock, Désolé !</div>
 										{% endif %}
-									</div>
-								</div> #}
+									</div> #}
+							
 
 								{% include 'product/single.html.twig'%}
 						</div>
@@ -84,6 +87,7 @@
 
 				{% endfor %}
 			</div>
+			
 		</div>
 	</div>
 </div>

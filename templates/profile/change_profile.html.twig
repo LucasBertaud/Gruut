@@ -44,7 +44,9 @@
 			<a href="{{path("profile_data")}}"><i class="fa-solid fa-database" style=" margin-right:1vw;"></i>Vos données</a>
 		</div>
 		<div class="my-data btn btn-block center-block" style="background: #F4F8FF; margin-bottom:5vh; width: 20vw; height: 64px; line-height: 8vh;">
-			<a href="{{path("profile_delete_account")}}"><i class="fa-solid fa-trash" style=" margin-right:1vw;"></i>Supprimer son compte</a>
+<a href="{{path("profile_delete_account")}}?resetSession={{true}}">
+	<i class="fa-solid fa-trash" style=" margin-right:1vw;"></i>Supprimer son compte</a>
+
 				
 		</div>
 

@@ -2,50 +2,60 @@
 
 
 {% block content %}
-<br><br><br><br><br><br>
-<main class="container">
-<h2 class='text-center'>Récapitulation de la commande du client {{order.getuser().getFullName()}}</h2> <br>
-<h4>Référence client : {{order.getReference()}} </h4>
-<table class='table table-bordered'>
-    <tr >
-        <th class='text-center'>Nom du produit</th>
-        <th class='text-center'>Nombre de produit</th>                      
-    </tr>
-    <tr>
-  
-    {% for nameProduct,quantity in productOrder %}
-       
-            <td class='text-center'>{{nameProduct}}</td>
-            <td class='text-center'>{{quantity}}</td>
-    </tr>
-    {% endfor %}
-     
-     </table>
-     
-<h4 class='text-center'>Composants à commander pour cette commande</h4>
+	<br><br><br><br><br><br>
+	<main class="container">
+		<h2 class='text-center'>Récapitulation de la commande du client
+			{{order.getuser().getFullName()}}</h2>
+		<br>
+		<h4>Référence client :
+			{{order.getReference()}}
+		</h4>
+		<table class='table table-bordered'>
+			<tr>
+				<th class='text-center'>Nom du produit</th>
+				<th class='text-center'>Nombre de produit</th>
+			</tr>
+			<tr>
 
-<table class='table table-bordered'> 
-    <tr> 
-        <th class='text-center'>Nom du produit></th>          
-        <th class='text-center'>Composant</th>       
-    </tr> 
-    <tr>
-    {% for componants in componantsProducts %}
-           {% for quantity,componant in componants %}
-           <td>            
-                {% for component  in componant %}
-                   {%  if ( component ==  component.getProduct().getName()) %}                                     
-                        {{component.getProduct().getName()}} </td>
-                    {% endif %} à revoir                      
-                        <td>{{component.getName()}} =>  ({{component.getQuantity() * quantity}})                         
-                {% endfor %}              
-            {% endfor %}
-            </td>
-    </tr>
-    {% endfor %}
-    
+				{% for nameProduct,quantity in productOrder %}
+					<td class='text-center'>{{nameProduct}}</td>
+					<td class='text-center'>{{quantity}}</td>
+				</tr>
+			{% endfor %}
 
-    
-</table>
-</main>
+		</table>
+
+		<h4 class='text-center'>Composants à commander pour cette commande</h4>
+
+		<table class='table table-bordered'>
+			<tr>
+                <th class='text-center'>Nom du produit</th>
+				<th class='text-center'>Composants</th>                
+			</tr>
+			<tr>
+				{% for componants in componantsProducts %}
+					{% for quantity,componant in componants %}
+						<td class='text-center'>
+							{% set componantArray = [] %}
+							{% for component  in componant %}
+
+								{% if component.getProduct().getName() not in componantArray %}
+									{{component.getProduct().getName()}} </td>
+									{% set componantArray = componantArray|merge([component.getProduct().getName()]) %}
+                                <td class='text-center'>
+								{% endif %}
+								{{component.getName()}}
+								=>  ({{component.getQuantity() * quantity}} piéces) <br>  
+							{% endfor %}
+                            </td>
+						{% endfor %}
+					
+				</tr>
+			{% endfor %}
+
+
+		</table>
+	
+		<a href="{{(referer)}}" class="btn btn-info col-md-12">Retour au panneau d'administritation</a>
+	</main>
 {% endblock %}

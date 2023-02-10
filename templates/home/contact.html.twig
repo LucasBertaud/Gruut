@@ -56,27 +56,23 @@
             </div>
         </div>
         <div class="infos2 col-sm-6" style="margin-top: 5vh;">
-            <div class="contact-infos2" style="background: #ddddddb3; border-radius:15px">
-                <h2>Nos inforùations</h2><br>
-                <span>
-                    <img src="" alt="">
-                    <h3>Appeler nous</h3><br>
-                    <small>05-06-61-46-87</small>
-                </span>
-                <span>
-                    <img src="" alt="">
-                    <h3>Emplacement</h3><br>
-                    <small>05 rue de la bienvenue</small>
-                </span>
-                <span>
-                    <img src="" alt="">
-                    <h3>Mail</h3><br>
-                    <small>contact@gruut.com</small>
-                    <button id="up" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400 ">
-                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                    </button>
-                    <button id="down" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg></button>
-                </span>
+            <div class="contact-infos2" style="background: #ddddddb3; border-radius:15px;  padding:4vh;">
+                <h2 class="text-center">Contactez-nous</h2><br>
+                {% for msg in app.flashes('flash') %}
+                    <div class="alert alert-success">
+                        {{msg}}
+                    </div>
+                {% endfor %}
+                {{form_start(form)}}
+    {{ form_row(form.Name) }}
+    {{ form_row(form.Email) }}
+    {{ form_row(form.Subject) }}
+    {{ form_row(form.Message) }}
+
+<button class="btn btn-primary" style="float:right;">Confirmez</button>
+
+{{form_end(form)}}
+
             </div>
         </div>
     </div>

@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\HttpFoundation\Request;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -44,7 +45,7 @@ class OrderCrudController extends AbstractCrudController
             ->remove('detail', Action::DELETE);
     }
 
-   public function commandeComposants(AdminContext $admin,ProductRepository $productRepository){
+   public function commandeComposants(AdminContext $admin,ProductRepository $productRepository, Request $request){
         $order = $admin->getEntity()->getInstance();
         $productOrder = [];
        
@@ -59,12 +60,11 @@ class OrderCrudController extends AbstractCrudController
       foreach($productOrder as $nameProduct => $item){
         $product = $productRepository->findOneByName($nameProduct);
 
-         $componantsProducts []  =  [
-             $item => $product->getComponants()->getValues()];            
-          
-      }
-
-      return $this->render('admin/composantsCommande.html.twig',compact('productOrder','order','componantsProducts'));
+         $componantsProducts [] =  [
+             $item => $product->getComponants()->getValues()];         
+        }
+        $referer = $request->headers->get('referer');    
+      return $this->render('admin/composantsCommande.html.twig',compact('productOrder','order','referer','componantsProducts'));
     }
 
 

@@ -7,6 +7,7 @@ use App\Form\ChangePasswordConnectedFormType;
 use App\Form\ChangeProfileType;
 use App\Form\PasswordVerificationType;
 use App\Repository\AddressRepository;
+use App\Repository\OrderDetailsRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\UserRepository;
@@ -193,16 +194,18 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            
             $passwordverif = $form->get('passwordverif')->getData();
             if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
                 if ($form->isSubmitted() && $form->isValid()) {
+                    if (!$request->getSession()->get('email_sent_')) {
                     $token = bin2hex(random_bytes(32));
                     $user->setToken($token);
                     $this->entityManager->persist($user);
                     $this->entityManager->flush();
 
                     $email = (new TemplatedEmail())
-                        ->from(new Address('gruut.company@gmail.com', 'Gruut'))
+                        ->from(new Address('gruut.company1@gmail.com', 'Gruut'))
                         ->to($user->getEmail())
                         ->subject('Suppression de compte')
                         ->htmlTemplate('profile/email.html.twig')
@@ -210,14 +213,23 @@ class ProfileController extends AbstractController
 
 
                     $mailer->send($email);
-
+                    $request->getSession()->set('email_sent_' , true);
                     return $this->render('profile/delete2.html.twig', [
                         "user" => $user,
                     ]);
                 }
+                else{
+                        return $this->render('profile/delete2.html.twig', [
+                            "user" => $user,
+                        ]);
+                }
+            }
             }
         }
-        return $this->render("profile/delete.html.twig", ["user" => $user, "passwordVerif" => $form->createView(),]);
+        if($request->getRequestUri() == "/profil/suppression-de-son-compte?resetSession=1"){
+           $request->getSession()->remove("email_sent_");
+        }
+        return $this->render("profile/delete.html.twig", ["user" => $user, "passwordVerif" => $form->createView()]);
     }
     #[Route('/suppression-de-son-compte/supprimer', name: 'delete_account_erase')]
     public function delete_account_erase(Request $request, SessionInterface $session, TokenStorageInterface $tokenStorage, UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo): Response
@@ -256,18 +268,26 @@ class ProfileController extends AbstractController
         }
     }
 
-    #[Route('/commandes-et-suivis', name: 'order_follow')]
-    public function order_follow(Request $request, UserInterface $user, UserRepository $userRepository): Response
+    #[Route('/historique-des-commandes', name: 'order_follow')]
+    public function order_follow(Request $request, UserInterface $user, UserRepository $userRepository, OrderRepository $orderRepository, OrderDetailsRepository $orderDetailsRepository): Response
     {
         $user = $this->getUser();
         $id = $user->getId();
-        $data = $userRepository->findById($id)[0];
-
-        return $this->render("profile/order_follow.html.twig", ["user" => $user]);
+        $order = $orderRepository->findByUserId($id);
+        $orderid = [];
+        foreach($order as $singleorder){
+            $ordersid[] = $singleorder->getid();
+        } 
+        $orderDetails = [];
+        foreach($ordersid as $orderid){
+            $orderDetails[] = $orderDetailsRepository->findByOrderId($orderid);
+        }
+        $orderDetails = array_reverse($orderDetails);
+        return $this->render("profile/order_follow.html.twig", ["user" => $user, "orderDetails" => $orderDetails]);
     }
 
     #[Route('/facture', name: 'bill')]
-    public function bill_page(Request $request, UserInterface $user, UserRepository $userRepository, \Knp\Snappy\Pdf $knpSnappyPdf, OrderRepository $orderRepository): Response
+    public function bill_page( UserInterface $user, OrderRepository $orderRepository): Response
     {
         $user = $this->getUser();
         $random = random_bytes(10);
@@ -277,7 +297,9 @@ class ProfileController extends AbstractController
         foreach ($order as $orderBill) {
            $bill[] = [$orderBill->getBill(), $orderBill->getId()];
         }
+        
         $bytes = (bin2hex($random));
+        
         return $this->render("profile/bill_page.html.twig", ["user" => $user, "id" => $id, 'bills' => $bill, 'random' => $bytes]);
     }
 }

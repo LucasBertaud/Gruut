@@ -30,7 +30,7 @@ class OrderCancelController extends AbstractController
 
         if (!$request->getSession()->get('email_sent_' . $stripeSessionId)) {
             $email = (new TemplatedEmail())
-                ->from(new Address('gruut.company@gmail.com', 'Gruut'))
+                ->from(new Address('gruut.company1@gmail.com', 'Gruut'))
                 ->to($user->getEmail())
                 ->subject('Annulation de commande')
                 ->htmlTemplate('order_cancel/email.html.twig')

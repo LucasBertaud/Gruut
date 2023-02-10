@@ -74,7 +74,15 @@
 			</b>
             <br>
             <br>
+
+			{% if total == 0 %}
+			<a href="{{path("category_index")}}" class="btn btn-danger btn-block">Votre panier est vide</a>
+			</div>
+			{% else %}
+				
 			<a href="{{path("order_index")}}" class="btn btn-success btn-block">Valider mon panier</a>
+			{% endif %}
+			
 		</div>
 	</div>
     <br>
