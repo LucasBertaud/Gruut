@@ -7,11 +7,13 @@ use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/mon-panier', name: 'cart_')]
 class CartController extends AbstractController
 {
+    
     #[Route('/', name: 'index')]
     public function index(Cart $cart): Response
     {
@@ -24,10 +26,23 @@ class CartController extends AbstractController
 
 
     #[Route('/add/{id}', name: 'add')]
-    public function add(Product $product, Cart $cart, Request $request)
+    public function add(Product $products, Cart $cart, Request $request, SessionInterface $session)
     {
-        $cart = $cart->add($product->getId());
         $referer = $request->headers->get('referer');
+        $session->remove('inputOfValue');
+        if(strpos($referer, "http://5.135.101.252:8000/nos-categories") !== false){
+            $inputOfValue = $request->request->get('inputOfValue');
+            if ($inputOfValue !== null) {
+                $session->set('inputOfValue', $inputOfValue);
+            }
+            $inputOfValue = $session->get('inputOfValue');
+            for($i = 0; $i < $inputOfValue; $i++){
+                $cart->add($products->getId());
+            }   
+        }
+        else{
+            $cart->add($products->getId());
+        }
         return $this->redirect($referer);
 
     }

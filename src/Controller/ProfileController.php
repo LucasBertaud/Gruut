@@ -275,14 +275,17 @@ class ProfileController extends AbstractController
         $id = $user->getId();
         $order = $orderRepository->findByUserId($id);
         $orderid = [];
-        foreach($order as $singleorder){
-            $ordersid[] = $singleorder->getid();
-        } 
+        
         $orderDetails = [];
-        foreach($ordersid as $orderid){
-            $orderDetails[] = $orderDetailsRepository->findByOrderId($orderid);
+        if(!$order == []){
+            foreach($order as $singleorder){
+                $ordersid[] = $singleorder->getid();
+            } 
+            foreach($ordersid as $orderid){
+                $orderDetails[] = $orderDetailsRepository->findByOrderId($orderid);
+            }
+            $orderDetails = array_reverse($orderDetails);
         }
-        $orderDetails = array_reverse($orderDetails);
         return $this->render("profile/order_follow.html.twig", ["user" => $user, "orderDetails" => $orderDetails]);
     }
 

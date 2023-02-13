@@ -152,3 +152,28 @@
         left: 100%
     }
 }
+
+.quantityCart {
+    visibility: hidden;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.card:hover .quantityCart{
+    visibility: visible;
+}
+
+
+.card:hover input:invalid + span::after {
+    content: "✖";
+ 
+    color: red;
+  }
+
+  .card:hover input:invalid + span + div {
+    display: none;
+  }

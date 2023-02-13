@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderSuccessController extends AbstractController
 {
 
-    private $entityManager;
+    private $entityManager; 
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -63,9 +63,9 @@ class OrderSuccessController extends AbstractController
             $entityManager->persist($productAll);            
         }
 
-        if(!$order->getisPaid()){
+        if($order->getState() == 0){
             $cart->deleteAll();
-            $order->setisPaid(1);
+            $order->setState(1);
                  
             
             $email = (new TemplatedEmail())
@@ -89,7 +89,7 @@ class OrderSuccessController extends AbstractController
             'total' => $total,
             'totalCarrier' => $totalCarrier,
         ));
-        $namepdf = "facture_$orderId.pdf";
+        $namepdf = sha1(uniqid());
         $pathpdf = "assets/pdf/$namepdf";
         $knpSnappyPdf->generateFromHtml($html, $pathpdf);
         $order->setBill($pathpdf);

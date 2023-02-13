@@ -44,14 +44,14 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $stripeSessionId = null;
 
-    #[ORM\Column]
-    private ?bool $isPaid = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $bill = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?\DateTimeImmutable $billing_date = null;
+
+    #[ORM\Column]
+    private ?int $state = null;
 
     public function __construct()
     {
@@ -189,18 +189,6 @@ class Order
         return $this;
     }
 
-    public function getIsPaid(): ?bool
-    {
-        return $this->isPaid;
-    }
-
-    public function setIsPaid(bool $isPaid): self
-    {
-        $this->isPaid = $isPaid;
-
-        return $this;
-    }
-
     public function getBill(): ?string
     {
         return $this->bill;
@@ -221,6 +209,18 @@ class Order
     public function setBillingDate(\DateTimeImmutable $billing_date): self
     {
         $this->billing_date = $billing_date;
+
+        return $this;
+    }
+
+    public function getState(): ?int
+    {
+        return $this->state;
+    }
+
+    public function setState(int $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

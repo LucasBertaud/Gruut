@@ -33,7 +33,7 @@
 		<div class="col-md-12 text-center">
 			<h1 class="text-center">Catégorie
 				<br>{{categories.name}}
-			</h1>
+			</h1>	
 			
 			<div class="row1 row" style="margin-top:5vh;">
 				{% for product in categories.products %}
@@ -83,14 +83,14 @@
 						</div> #}
 
 					{# </div> #}
-
+					
 
 				{% endfor %}
 			</div>
-			
 		</div>
 	</div>
 </div>
+
 {% endblock %}
 
  {% block script %}
@@ -117,6 +117,29 @@ cardButton.addEventListener("click", () => {
 	} 	 
 )
 
+
+let inputsQuantity = document.querySelectorAll(".quantityCart");
+let hrefs = document.querySelectorAll(".click");
+let inputOfValue = 1;
+
+arrayInputs = Array.from(inputsQuantity).map(function (inputQuantity) {
+	return inputQuantity;
+});
+arrayInputs.forEach(function (input, index) {
+	var href = hrefs[index];
+	href.addEventListener("click", function(){
+		inputValue = input.value
+		if(inputValue > 100) {
+			inputValue = 0
+		}
+		cartHref = href.href;
+		$.ajax({
+			type: "POST",
+			url: cartHref,
+			data: {inputOfValue: inputValue},
+		});
+	});
+});
  </script>
  
  {% endblock %}

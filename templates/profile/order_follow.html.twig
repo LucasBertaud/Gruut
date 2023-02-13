@@ -152,6 +152,12 @@
 
 		<div class="col-md-9 text-center">
 			<h1 style="margin-bottom: 5vh;">Vos commandes</h1>
+{% if orderDetails is empty %}
+<hr>
+<p>Vous n'avez pas encore passé de commande.</p>
+{% endif %}
+
+			
 			{% for orderDetail in orderDetails %}
 			<div class="card" style="height: 350px; margin:1vw; float:left;">
 				{% set productArray = [] %}

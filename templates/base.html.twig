@@ -9,9 +9,54 @@
 		<Title>
 			{% block title %}{% endblock %}
 			- Gruut</Title>
-
+		
 		<script src="https://kit.fontawesome.com/de40581f96.js" crossorigin="anonymous" defer></script>
+	   <script src="{{asset("/Tarte-au-citron/tarteaucitron.js")}}"></script>
+		<script type="text/javascript">
+        tarteaucitron.init({
+    	  "privacyUrl": "", /* Privacy policy url */
+          "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
 
+    	  "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+    	  "cookieName": "tarteaucitron", /* Cookie name */
+    
+    	  "orientation": "middle", /* Banner position (top - bottom) */
+       
+          "groupServices": false, /* Group services by category */
+          "serviceDefaultState": "wait", /* Default state (true - wait - false) */
+                           
+    	  "showAlertSmall": false, /* Show the small banner on bottom right */
+    	  "cookieslist": false, /* Show the cookie list */
+                           
+          "closePopup": false, /* Show a close X on the banner */
+
+          "showIcon": false, /* Show cookie icon to manage cookies */
+          //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
+          "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+
+    	  "adblocker": false, /* Show a Warning if an adblocker is detected */
+                           
+          "DenyAllCta" : true, /* Show the deny all button */
+          "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
+          "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
+                           
+    	  "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+
+    	  "removeCredit": false, /* Remove credit link */
+    	  "moreInfoLink": true, /* Show more info link */
+
+          "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+          "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+
+    	  //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+                          
+          "readmoreLink": "", /* Change the default readmore link */
+
+          "mandatory": true, /* Show a message about mandatory cookies */
+          "mandatoryCta": true /* Show the disabled accept button when mandatory on */
+        });	
+		
+        </script>		
 		<link rel="stylesheet" href="{{asset("assets/images/g.png")}}">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,7 +223,7 @@
 						</div>
 
 						<div class="col-md-3 widget">
-							<h3 class="widget-title">Follow me</h3>
+							<h3 class="widget-title">Suivez-nous</h3>
 							<div class="widget-body">
 								<p class="follow-me-icons">
 									<a href="">
@@ -217,16 +262,15 @@
 						<div class="col-md-6 widget">
 							<div class="widget-body">
 								<p class="simplenav">
-									<a href="#">Home</a>
+									<a href="{{path("app_home")}}">Home</a>
 									|
-									<a href="about.html">About</a>
+									<a href="{{path("app_about")}}">A propos</a>
 									|
-									<a href="sidebar-right.html">Sidebar</a>
-									|
-									<a href="contact.html">Contact</a>
+<a href="{{path("app_contact")}}">Contact</a>
+
 									|
 									<b>
-										<a href="signup.html">Sign up</a>
+										<a href="{{path("app_register")}}">S'inscrire</a>
 									</b>
 								</p>
 							</div>
@@ -235,7 +279,7 @@
 						<div class="col-md-6 widget">
 							<div class="widget-body">
 								<p class="text-right">
-									Copyright &copy; 2014, Your name. Designed by
+									Copyright &copy; 2014, Gruut. Design par
 									<a href="http://gettemplate.com/" rel="designer">gettemplate</a>
 								</p>
 							</div>

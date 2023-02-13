@@ -92,3 +92,33 @@
 		</div>
 	</section>
     {% endblock %}
+
+	{% block script %}
+	
+	<script>
+	let inputsQuantity = document.querySelectorAll(".quantityCart");
+let hrefs = document.querySelectorAll(".click");
+let inputOfValue = 1;
+
+arrayInputs = Array.from(inputsQuantity).map(function (inputQuantity) {
+	return inputQuantity;
+});
+arrayInputs.forEach(function (input, index) {
+	var href = hrefs[index];
+	href.addEventListener("click", function(){
+		inputValue = input.value
+		if(inputValue > 100) {
+			inputValue = 0
+		}
+		cartHref = href.href;
+		$.ajax({
+			type: "POST",
+			url: cartHref,
+			data: {inputOfValue: inputValue},
+		});
+	});
+});
+ </script>
+	</script>
+
+	{% endblock %}

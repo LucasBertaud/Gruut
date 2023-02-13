@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}Commande
 {% endblock %}
+
 {% block css %}
+
+	
 
 <link rel="stylesheet" href="{{ asset ('assets/css/orderStyle.css')}}">
 	{% endblock %}
@@ -61,5 +64,7 @@
 		</div> #}
 			<hr>
 			{{form_end(form)}}
+			
 		</main>
+
 	{% endblock %}

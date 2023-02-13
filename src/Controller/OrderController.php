@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 
 
@@ -24,7 +25,7 @@ class OrderController extends AbstractController
     function __construct(private entityManagerInterface $entityManager){}        
     
     #[Route('/', name: 'index')]
-    public function index(Cart $cart, Request $request, PaginatorInterface $paginator): Response
+    public function index( RequestStack $test,Cart $cart, Request $request, PaginatorInterface $paginator): Response
     {   
         
         
@@ -39,7 +40,7 @@ class OrderController extends AbstractController
             $data,
             $request->query->getInt('page', 1), 
             3);
-
+               
         
         $form = $this->createForm(OrderType::class, null , ['user'=> $this->getUser()]);        
         return $this->render('order/index.html.twig', [
@@ -80,7 +81,7 @@ class OrderController extends AbstractController
             $order->setCarrierName($carriers->getName());
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($delivery_content);
-            $order->setIsPaid(0);
+            $order->setState(0);
             $order->setStripeSessionId(0);
 
             $this->entityManager->persist($order);

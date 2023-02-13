@@ -30,7 +30,7 @@ class OrderType extends AbstractType
                 'class' => Carrier::class,
                 'multiple' => false,
                 'expanded' => true,
-            ])
+             ])
 
             ->add('submit', SubmitType::class,[
                 'label' => 'Valider ma commande',
