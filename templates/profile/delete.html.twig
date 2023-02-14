@@ -23,9 +23,70 @@
 	.top-space {
 		margin-top: 0 !important;
 	}
+
+	.profile-head h6{
+    color: #0062cc;
+}
+.profile-edit-btn{
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+.proile-rating{
+    font-size: 12px;
+    color: #818182;
+    margin-top: 5%;
+}
+.proile-rating span{
+    color: #495057;
+    font-size: 15px;
+    font-weight: 600;
+}
+.profile-head .nav-tabs{
+    margin-bottom:5%;
+}
+.profile-head .nav-tabs .nav-link{
+    font-weight:600;
+    border: none;
+}
+.profile-head .nav-tabs .nav-link.active{
+    border: none;
+    border-bottom:2px solid #0062cc;
+}
+.profile-work{
+    padding: 14%;
+    margin-top: -15%;
+}
+.profile-work p{
+    font-size: 12px;
+    color: #818182;
+    font-weight: 600;
+    margin-top: 10%;
+}
+.profile-work a{
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+}
+.profile-work ul{
+    list-style: none;
+}
+.profile-tab label{
+    font-weight: 600;
+}
+.profile-tab p{
+    font-weight: 600;
+    color: #0062cc;
+}
+
 </style>
 
-<div class="row">
+{# <div class="row">
 			<div class="col-md-3 text-center" style="background-color: #EDEDED; border-right: 2px solid #898989">
 			<div class="left-profile-container">
 				<img src="{{ asset("assets/images/profil_img.png") }}" alt="">
@@ -79,14 +140,123 @@
 <p>Pour pouvoir supprimer vos données, veuillez entrez votre mot de passe.</p>
 <br>
 
-<div style="padding: 5vh;">
+		<div style="padding: 5vh;">
 			{{ form_start(passwordVerif) }}
 			{{ form_row(passwordVerif.passwordverif) }}
 			<button class="btn btn-primary" style="float:right;">Confirmez</button>
 			{{ form_end(passwordVerif) }}
 		</div>
 </div>
-</div>
+</div> #}
 
+
+<div class="container emp-profile" style="margin-top:5vh;">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-img">
+                           <div class="left-profile-container">
+								<img src="{{ asset("assets/images/profil_img.png") }}" alt="">
+								<h1 class="profileName">{{user.firstname}} {{user.lastname}}</h1>
+									
+							</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-head">
+                                    <h4>
+                                        {{user.firstname}} {{user.lastname}}
+                                    </h4>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" style="color:green !important;">Supprimer son compte</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"  style="color:green !important;">Modifier le mot de passe</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="data-tab" data-toggle="tab" href="#data" role="tab" aria-controls="data" aria-selected="false"  style="color:green !important;">Données</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="{{path("address_index")}}"><input type="bmit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                         <div class="profile-work">
+                            <p>Compte</p>
+                            <a href="{{path("profile_index")}}">Votre Profil</a><br/>
+                            <a href="{{path("profile_index")}}">Votre Adresse</a><br/>
+                            <a href="{{path("profile_index")}}">Vos données</a>
+                            <p>Achats</p>
+                            <a href="{{path("profile_order_follow")}}">Commande et suivis</a><br/>
+                            <a href="{{path("profile_order_follow")}}">Facture</a><br/>
+							<p>Autre</p>
+                            <a href="{{path('profile_delete_account')}}?resetSession={{true}}">Supprimer son compte</a><br/>
+                            <a href="{{path("app_logout")}}">Se déconnecter</a>
+                        </div> 
+                    </div>
+                    <div class="col-md-8">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">			
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h1 class="text-center">Supprimer son compte</h1><br>
+												<p style="color:grey !important">Vous avez la possibilité de demander la suppression de votre compte et de vos données personnelles enregistrées chez nous. Cependant, il est important de noter que certains de ces éléments, tels que les factures, doivent être conservés en raison des obligations légales et fiscales. Nous ferons de notre mieux pour effacer toutes les données personnelles en notre possession, mais certaines peuvent être exceptionnellement conservées.</p>
+												<br>
+                                                {% if passwordIsVerif == true %}
+													<p style="color:grey !important">Nous vous avons envoyé un email contenant un lien de suppression de compte.</p>
+                                                {% else %}
+												<p style="color:grey !important">Pour pouvoir supprimer vos données, veuillez entrez votre mot de passe.</p>
+												<br>
+                                                {% endif %}
+														<div style="padding: 5vh;">
+                                                        {% if passwordIsVerif == true %}
+																<p>Si vous n'avez reçu l'email, s'il vous plaît vérifiez vos spams ou
+																	<a href="{{ path('profile_delete_account')}}?resetSession={{true}}">essayez de nouveau</a>.</p>
+
+																{% else %}
+															{{ form_start(passwordVerif) }}
+															{{ form_row(passwordVerif.passwordverif) }}
+															<button class="btn btn-primary" style="float:right;">Confirmez</button>
+															{{ form_end(passwordVerif) }}
+                                                        {% endif %}
+														</div>
+                                            </div>
+                                        </div><hr>
+                                        
+                            </div>
+							
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                		<h1 class="text-center">Modifier votre mot de passe</h1>
+                                                        <br>
+                                                        {# <div {% if alert != null %} {% if alert == "Votre mot de passe a bien été modifié, vous allez être redirigé vers votre profil." %} class="alert alert-success" {% else %} class="alert alert-danger" {% endif %} {% else %} {% endif %} role="alert">{{alert}}</div> #}
+                                                        <br>
+                                                        <div style="padding: 5vh;">
+                                                            {# {{ form_start(resetForm) }}
+                                                            {{ form_row(resetForm.oldPassword) }}
+                                                            {{ form_row(resetForm.plainPassword) }} #}
+                                                            <button class="btn btn-primary" style="float:right;">Reset password</button>
+                                                            {# {{ form_end(resetForm) }} #}
+                                                        </div>
+                                            </div>
+                                        </div><hr>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>         
+        </div>
 {% endblock %}
 
+{% block script %}
+	<script>
+
+	</script>
+{% endblock %}

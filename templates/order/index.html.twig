@@ -68,3 +68,26 @@
 		</main>
 
 	{% endblock %}
+
+{% block script %}
+
+	<script>
+let radioButtons = document.querySelectorAll(".form-check-input");
+radioButtons.forEach(radioButton => {
+	radioButton.addEventListener("change", function(){
+		sessionStorage.setItem("radioStorage" , radioButton.value)
+	})
+});
+let getRadioStorage = sessionStorage.getItem("radioStorage");
+let repairRadioValue = getRadioStorage - 1;
+radioButtons[repairRadioValue].checked = true;
+
+let selectOptions = document.querySelector('select');
+selectOptions.addEventListener('change', function () {
+			sessionStorage.setItem('selectedIndex' , this.selectedIndex);
+		})
+let getSelectOptions = sessionStorage.getItem('selectedIndex');
+selectOptions.options.selectedIndex = getSelectOptions
+	</script>	
+
+{% endblock %}

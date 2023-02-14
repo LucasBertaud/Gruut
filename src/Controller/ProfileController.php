@@ -47,14 +47,36 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/', name: 'index')]
-    public function index(UserInterface $user): Response
+    public function index(UserInterface $user, AddressRepository $addressRepository, Request $request, SessionInterface $session): Response
     {
+        $passwordIsVerif = false;
         $user = $this->getUser();
         $id = $this->getUser()->getId();
+        $address = $addressRepository->findByUserId($id);
+        $form = $this->createForm(PasswordVerificationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $passwordverif = $form->get('passwordverif')->getData();
+            if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $passwordIsVerif = true;
+                    return $this->render('profile/index.html.twig', [
+                        "user" => $user,
+                        "passwordIsVerif" => $passwordIsVerif,
+                        'id' => $id,
+                        'address' => $address,
+                    ]);
+                }
+            }
+        }
         return $this->render('profile/index.html.twig', [
             'user' => $user,
-            'id' => $id
-        ]);
+            'id' => $id,
+            'address' => $address,
+            'passwordVerif' => $form->createView(),
+            "passwordIsVerif" => $passwordIsVerif
+        ]); 
     }
 
     #[Route('/modifier-le-mot-de-passe/{id}', name: 'change_password')]
@@ -188,6 +210,7 @@ class ProfileController extends AbstractController
     public function delete_account(Request $request, UserInterface $user, UserRepository $userRepository, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
+        $passwordIsVerif = false;
         $id = $user->getId();
         $data = $userRepository->findById($id)[0];
         $form = $this->createForm(PasswordVerificationType::class);
@@ -198,6 +221,7 @@ class ProfileController extends AbstractController
             $passwordverif = $form->get('passwordverif')->getData();
             if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
                 if ($form->isSubmitted() && $form->isValid()) {
+                    $passwordIsVerif = true;
                     if (!$request->getSession()->get('email_sent_')) {
                     $token = bin2hex(random_bytes(32));
                     $user->setToken($token);
@@ -214,13 +238,15 @@ class ProfileController extends AbstractController
 
                     $mailer->send($email);
                     $request->getSession()->set('email_sent_' , true);
-                    return $this->render('profile/delete2.html.twig', [
+                    return $this->render('profile/delete.html.twig', [
                         "user" => $user,
+                        "passwordIsVerif" => $passwordIsVerif
                     ]);
                 }
                 else{
-                        return $this->render('profile/delete2.html.twig', [
+                        return $this->render('profile/delete.html.twig', [
                             "user" => $user,
+                            "passwordIsVerif" => $passwordIsVerif
                         ]);
                 }
             }
@@ -229,7 +255,7 @@ class ProfileController extends AbstractController
         if($request->getRequestUri() == "/profil/suppression-de-son-compte?resetSession=1"){
            $request->getSession()->remove("email_sent_");
         }
-        return $this->render("profile/delete.html.twig", ["user" => $user, "passwordVerif" => $form->createView()]);
+        return $this->render("profile/delete.html.twig", ["user" => $user, "passwordVerif" => $form->createView(), "passwordIsVerif" => $passwordIsVerif]);
     }
     #[Route('/suppression-de-son-compte/supprimer', name: 'delete_account_erase')]
     public function delete_account_erase(Request $request, SessionInterface $session, TokenStorageInterface $tokenStorage, UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo): Response
@@ -286,7 +312,15 @@ class ProfileController extends AbstractController
             }
             $orderDetails = array_reverse($orderDetails);
         }
-        return $this->render("profile/order_follow.html.twig", ["user" => $user, "orderDetails" => $orderDetails]);
+        $random = random_bytes(10);
+        $bill = [];
+        foreach ($order as $orderBill) {
+            $bill[] = [$orderBill->getBill(), $orderBill->getId()];
+        }
+
+        $bytes = (bin2hex($random));
+
+        return $this->render("profile/order_follow.html.twig", ["user" => $user, "orderDetails" =>$orderDetails, 'bills' => $bill, 'random' => $bytes]);
     }
 
     #[Route('/facture', name: 'bill')]

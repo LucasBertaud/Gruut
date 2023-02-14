@@ -30,7 +30,7 @@ class CartController extends AbstractController
     {
         $referer = $request->headers->get('referer');
         $session->remove('inputOfValue');
-        if(strpos($referer, "http://5.135.101.252:8000/nos-categories") !== false){
+        if(strpos($referer, "http://5.135.101.252:8000/nos-categories") !== false || $referer == "http://5.135.101.252:8000/" || strpos($referer, "http://5.135.101.252:8000/produit") !== false){
             $inputOfValue = $request->request->get('inputOfValue');
             if ($inputOfValue !== null) {
                 $session->set('inputOfValue', $inputOfValue);

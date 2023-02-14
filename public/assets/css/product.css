@@ -177,3 +177,9 @@ input::-webkit-inner-spin-button {
   .card:hover input:invalid + span + div {
     display: none;
   }
+
+.quantityCartShow:invalid + span::after {
+        content: "✖";
+ 
+    color: red;
+}

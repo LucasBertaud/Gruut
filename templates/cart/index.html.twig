@@ -54,6 +54,7 @@
 						</td>
 
 					</tr>
+					
 					{% else %}
 					<td colspan='6' class="text-center">Vous n'avez pas d'articles dans votre panier. <br>
 					<a href="{{path("category_index")}}">Regarder nos produits</a>
@@ -62,8 +63,11 @@
 				</tbody>
 			{% endfor %}
 		</table>
-
-
+		{% if total > 0 %}
+		<a href="{{path("cart_delete_all")}}" class="btn btn-danger float-left ">Vider mon panier
+			<i class="bi bi-cart-x-fill"></i>
+		</a>
+		{% endif %}
 		<div class="text-right">
 			<b>Nombre de produits: 
 				 {{quantity.getQuantity()}} 
@@ -81,6 +85,7 @@
 			{% else %}
 				
 			<a href="{{path("order_index")}}" class="btn btn-success btn-block">Valider mon panier</a>
+			
 			{% endif %}
 			
 		</div>

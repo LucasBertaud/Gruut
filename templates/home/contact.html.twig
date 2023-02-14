@@ -33,6 +33,10 @@
         border: 0px;
         border-radius: 5px;
     }
+    .form-control{
+max-width: 470px;
+
+    }
 
 </style>
 <br>
@@ -68,8 +72,10 @@
     {{ form_row(form.Email) }}
     {{ form_row(form.Subject) }}
     {{ form_row(form.Message) }}
-
+<div>
+<button style="visibility: hidden;"></button>
 <button class="btn btn-primary" style="float:right;">Confirmez</button>
+</div>
 
 {{form_end(form)}}
 

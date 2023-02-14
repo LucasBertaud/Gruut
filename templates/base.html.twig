@@ -9,54 +9,36 @@
 		<Title>
 			{% block title %}{% endblock %}
 			- Gruut</Title>
-		
+
 		<script src="https://kit.fontawesome.com/de40581f96.js" crossorigin="anonymous" defer></script>
-	   <script src="{{asset("/Tarte-au-citron/tarteaucitron.js")}}"></script>
-		<script type="text/javascript">
-        tarteaucitron.init({
-    	  "privacyUrl": "", /* Privacy policy url */
-          "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
+		<script src="{{asset("/Tarte-au-citron/tarteaucitron.js")}}"></script>
+		<script>
+			tarteaucitron.init({
+			"privacyUrl": "", /* URL de la page de la politique de vie privée */
 
-    	  "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
-    	  "cookieName": "tarteaucitron", /* Cookie name */
-    
-    	  "orientation": "middle", /* Banner position (top - bottom) */
-       
-          "groupServices": false, /* Group services by category */
-          "serviceDefaultState": "wait", /* Default state (true - wait - false) */
-                           
-    	  "showAlertSmall": false, /* Show the small banner on bottom right */
-    	  "cookieslist": false, /* Show the cookie list */
-                           
-          "closePopup": false, /* Show a close X on the banner */
+			"hashtag": "#tarteaucitron", /* Ouvrir le panneau contenant ce hashtag */
+			"cookieName": "tarteaucitron", /* Nom du Cookie */
 
-          "showIcon": false, /* Show cookie icon to manage cookies */
-          //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
-          "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+			"orientation": "middle", /* Position de la bannière (top - bottom) */
+			"showAlertSmall": true, /* Voir la bannière réduite en bas à droite */
+			"cookieslist": true, /* Voir la liste des cookies */
 
-    	  "adblocker": false, /* Show a Warning if an adblocker is detected */
-                           
-          "DenyAllCta" : true, /* Show the deny all button */
-          "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
-          "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
-                           
-    	  "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+			"adblocker": false, /* Voir une alerte si un bloqueur de publicités est détecté */
+			"AcceptAllCta": true, /* Voir le bouton accepter tout (quand highPrivacy est à true) */
+			"highPrivacy": true, /* Désactiver le consentement automatique */
+			"handleBrowserDNTRequest": false, /* Si la protection du suivi du navigateur est activée, tout interdire */
 
-    	  "removeCredit": false, /* Remove credit link */
-    	  "moreInfoLink": true, /* Show more info link */
+			"removeCredit": false, /* Retirer le lien vers tarteaucitron.js */
+			"moreInfoLink": true, /* Afficher le lien "voir plus d'infos" */
+			"useExternalCss": false,
+			/* Si false, tarteaucitron.css sera chargé */
 
-          "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-          "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+			// "cookieDomain": ".my-multisite-domaine.fr", /* Cookie multisite */
 
-    	  //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
-                          
-          "readmoreLink": "", /* Change the default readmore link */
-
-          "mandatory": true, /* Show a message about mandatory cookies */
-          "mandatoryCta": true /* Show the disabled accept button when mandatory on */
-        });	
-		
-        </script>		
+			"readmoreLink": "/cookiespolicy" /* Lien vers la page "Lire plus" */
+			(tarteaucitron.job = tarteaucitron.job || []).push('youtube');
+			});
+		</script>
 		<link rel="stylesheet" href="{{asset("assets/images/g.png")}}">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,95 +58,94 @@
 
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
-									<script src="assets/js/html5shiv.js"></script>
-									<script src="assets/js/respond.min.js"></script>
-				<![endif]-->{% block css %}
+													<script src="assets/js/html5shiv.js"></script>
+													<script src="assets/js/respond.min.js"></script>
+								<![endif]-->{% block css %}
 
 	{% endblock %}
 	</head>
 
-	<style>
+		<style>
 
-	.item {
-    position:relative;
-    padding-top:20px;
-    display:inline-block;
+.item {
+	position: relative;
+	padding-top: 20px;
+	display: inline-block;
 }
 
-	.notify-badge{
-		position: absolute;
-		right:-20px;
-		top:10px;
-		background:red;
-		text-align: center;
-		border-radius: 30px 30px 30px 30px;
-		color:white;
-		padding:5px 10px;
-	
-	}
+.notify-badge {
+	position: absolute;
+	right: -20px;
+	top: 10px;
+	background: red;
+	text-align: center;
+	border-radius: 30px 30px 30px 30px;
+	color: white;
+	padding: 5px 10px;
 
+}
 	</style>
-
-		<body
+	
+		<div
+		
 		class="home"> <!-- Fixed navbar -->
 		<div class="navbar navbar-inverse navbar-fixed-top headroom">
 			<div class="container">
+
+				{% if quantity.getQuantity() > 0 %}
+					<div class="item" style="float:right;">
+						<a href="{{ path("cart_index")}}">
+							<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+							<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+						</a>
+					</div>
+					<p></p>
+				{% else %}
+					<div class="item" style="float:right;">
+						<a href="{{ path("cart_index")}}">
+							<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+							<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+						</a>
+					</div>
+					<p></p>
+				{% endif %}
+
 				<div
 					class="navbar-header">
+
 					<!-- Button for smallest screens -->
 					<div class="responsive-cart" style="display: none;">
 						{% if quantity.getQuantity() > 0 %}
-									<div class="item" style="float:right;">								
-										<a href="{{ path("cart_index")}}">
-											<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
-											<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
-										</a>
-									</div>
-									<p></p>
-								{% else %}
-									<div class="item" style="float:right;">								
-										<a href="{{ path("cart_index")}}">
-											<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
-											<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
-										</a>
-									</div>
-									<p></p>
-						{% endif %}   
+							<div class="item" style="float:right;">
+								<a href="{{ path("cart_index")}}">
+									<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+									<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+								</a>
+							</div>
+							<p></p>
+						{% else %}
+							<div class="item" style="float:right;">
+								<a href="{{ path("cart_index")}}">
+									<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
+									<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
+								</a>
+							</div>
+							<p></p>
+						{% endif %}
 					</div>
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{{ path('app_home') }}" style="padding:4vh;"><img src="{{asset('assets/images/Gruut.svg')}}" alt="Progressus HTML5 template" class="img-responsive " style="width: 185px;"></a>
+					<a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{asset('assets/images/Gruut.svg')}}" alt="Progressus HTML5 template" class="img-responsive " style="width: 185px;"></a>
 				</div>
-						
-				
-				
+
+
 				<div class="navbar-collapse collapse">
 
-				<div class="nav-cart">
-					{% if quantity.getQuantity() > 0 %}
-								<div class="item" style="float:right;">								
-									<a href="{{ path("cart_index")}}">
-										<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
-										<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
-									</a>
-								</div>
-								<p></p>
-							{% else %}
-								<div class="item" style="float:right;">								
-									<a href="{{ path("cart_index")}}">
-										<span class="notify-badge badge badge-light">{{quantity.getQuantity()}}</span>
-										<img id="shopping_cart" src="{{ asset('assets/images/shopping-cart.png')}}">
-									</a>
-								</div>
-								<p></p>
-					{% endif %}   
-				</div>
-				
 					<ul class="nav navbar-nav pull-right">
-					<br>
+						<br>
 						<li>
 							<a class="btn" href="{{ path("app_about") }}">A propos</a>
 							<div class="underline"></div>
@@ -192,14 +173,14 @@
 							</li>
 						{% endif %}
 					</ul>
-							 
+
 
 				</div>
 				<!--/.nav-collapse -->
 			</div>
 		</div>
 		<!-- /.navbar -->
- 		
+
 		<!-- Header -->
 		{% block content %}{% endblock %}
 		<!-- /social links -->
@@ -266,7 +247,7 @@
 									|
 									<a href="{{path("app_about")}}">A propos</a>
 									|
-<a href="{{path("app_contact")}}">Contact</a>
+									<a href="{{path("app_contact")}}">Contact</a>
 
 									|
 									<b>
@@ -292,7 +273,7 @@
 
 		</footer>
 
-	{% block script %}{% endblock %}
+		{% block script %}{% endblock %}
 		<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>

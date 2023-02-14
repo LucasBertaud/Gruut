@@ -74,10 +74,7 @@
 	
 		<h1 class="text-center">Modifier votre mot de passe</h1>
 		<br>
-<div {% if alert != null %} {% if alert == "Votre mot de passe a bien été modifié, vous allez être redirigé vers votre profil." %} class="alert alert-success" {% else %} class="alert alert-danger" {% endif %} {% else %} {% endif %} role="alert">{{alert}}</div>
-
-
-
+		<div {% if alert != null %} {% if alert == "Votre mot de passe a bien été modifié, vous allez être redirigé vers votre profil." %} class="alert alert-success" {% else %} class="alert alert-danger" {% endif %} {% else %} {% endif %} role="alert">{{alert}}</div>
 		<br>
 		<div style="padding: 5vh;">
 			{{ form_start(resetForm) }}
@@ -86,6 +83,8 @@
 			<button class="btn btn-primary" style="float:right;">Reset password</button>
 			{{ form_end(resetForm) }}
 		</div>
+
+		
 	</div>
 	</div>
 {% endblock %}
