@@ -122,18 +122,19 @@
                         <a href="{{path("address_index")}}"><input type="bmit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/></a>
                     </div>
                 </div>
-                <div class="row">
+                <div class="responsive row">
                     <div class="col-md-4">
                          <div class="profile-work">
                             <p>Compte</p>
                             <a href="{{path("profile_index")}}">Votre Profil</a><br/>
                             <a href="{{path("profile_index")}}">Votre Adresse</a><br/>
-                            <a href="{{path("profile_index")}}">Vos données</a>
+                            <a href="{{path("profile_index")}}">Vos données</a><br/>
                             <p>Achats</p>
                             <a href="{{path("profile_order_follow")}}">Commande et suivis</a><br/>
                             <a href="{{path("profile_order_follow")}}">Facture</a><br/>
 							<p>Autre</p>
                             <a href="{{path('profile_delete_account')}}?resetSession={{true}}">Supprimer son compte</a><br/>
+                            <a href="{{path('profile_delete_account')}}?resetSession={{true}}">Modifier son mot de passe</a><br/>
                             <a href="{{path("app_logout")}}">Se déconnecter</a>
                         </div> 
                     </div>

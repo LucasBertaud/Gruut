@@ -37,7 +37,6 @@
 					<span class="fa fa-star rateAverageStar"></span>
 				
 				{% endif %}
-				
             <hr>
 			<div class="flexbyme"></div>
 			<p>{{ product.description }}</p>
@@ -60,7 +59,8 @@
 			
 		</div>
 	</div>
-
+        {{form_start(formModify)}}
+        {{form_end(formModify)}}
 {% if commented != true and productUserBuy != false %}
 
 	{{form_start(form)}}
@@ -71,27 +71,7 @@
 {% endif %}
 
 	<div class="container">
-
-		{% for rating in allRatings %}
-  		<div class="row">	
-			<div class="col-md-12">
-				<i class="fa-solid fa-user"></i>  <span style="font-weight: bold">{{rating.user.firstname}}</span> <br>
-				{% set rate = rating.rating %}
-					<span class="fa fa-star rateStar"></span>
-					<span class="fa fa-star rateStar"></span>
-					<span class="fa fa-star rateStar"></span>
-					<span class="fa fa-star rateStar"></span>
-					<span class="fa fa-star rateStar"></span>  <br>
-				{{rating.text}}
-				 {% if rating.user == user %}
-					<br>
-					<a href="{{path("product_show_modify", { 'slug' : product.slug , 'id' : rating.id})}}" class="btn btn-primary floatModify">Modifier votre contenu</a>
-				{% endif %} 
-				
-			</div>
-		</div>
-<hr>
-		{% endfor %}
+	
 		
 	</div>
 
@@ -103,10 +83,11 @@
 {% block script %}
 
 	<script>
+
 let starsAverage = document.querySelectorAll(".rateAverageStar");
+let fiveStars = 5;
 {% set rateAverage = rateOfProduct %}
 var rateAverage = {{rateAverage|json_encode|raw}};
-console.log(rateAverage)
 for(i = 0; i < rateAverage; i++){
 starsAverage[i].classList.add("checkedAverageStar")
 }
@@ -116,6 +97,12 @@ starsAverage[i].classList.add("checkedAverageStar")
 let inputs = document.querySelectorAll(".form-check-input")
 let fiveStar = 5;
 inputs.forEach(function(input, i){
+    if(input.defaultChecked == true){
+        input.classList.add("checkedStar")
+		for(index = 0; index < i; index++){
+			inputs[index].classList.add("checkedStar")
+		}
+    }
 	input.addEventListener("change", function(){
 		for(index = 0; index < fiveStar; index++){
 		inputs[index].classList.remove("checkedStar")

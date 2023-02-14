@@ -102,7 +102,7 @@ width: 33px;
 
 
 <div class="card " style="height: 350px; margin:1vw; float:left;">
-	<div class="card-img"> <a href="{{ path ('product_show', { 'slug' : product.slug } ) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px" height="150px" style="border-radius:5px; min-height:150px;" ></a></div>
+	<div class="card-img"> <a href="{{ path ('product_show', { 'slug' : product.slug }) }}"><img src="{{asset('assets/images/')}}{{product.illustration}}" alt="{{ product.name }}" class="img-fluid" width="150px" height="150px" style="border-radius:5px; min-height:150px;" ></a></div>
 	<div class="card-info">
 		<p class="text-title" style="font-weight: 900; font-size: 1.2em; line-height: 1.5;">{{product.name}}</p>		
 		<p class="text-body" style="font-size: .9em;">{{ product.subtitle }}</p>

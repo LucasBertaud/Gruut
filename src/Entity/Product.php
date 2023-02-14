@@ -47,11 +47,15 @@ class Product
 
     #[ORM\Column]
     private ?bool $isBest = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Ratings::class)]
+    private Collection $ratings;
       
 
     public function __construct()
     {
         $this->componants = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
       
@@ -200,6 +204,36 @@ class Product
     public function setIsBest(bool $isBest): self
     {
         $this->isBest = $isBest;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ratings>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Ratings $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Ratings $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getProduct() === $this) {
+                $rating->setProduct(null);
+            }
+        }
 
         return $this;
     }

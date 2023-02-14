@@ -183,3 +183,48 @@ input::-webkit-inner-spin-button {
  
     color: red;
 }
+
+.rate {
+    color: gold;
+}
+
+#ratings_rating{
+    display: flex;
+}
+
+.form-check{
+    margin-left: 10px;
+}
+
+.form-check-label{
+    visibility: hidden;
+}
+
+.form-check-input{
+    position: relative;
+    margin: 10px !important;
+}
+.form-check-input:hover{
+    cursor: pointer;
+}
+
+.form-check-input:after{
+    content: "★" !important;
+    font-size: 50px;
+    visibility: visible !important;
+    position: absolute;
+    top: -31px;
+    left: -14px;
+}
+
+.checkedStar{
+    color: gold;
+}
+
+.floatModify{
+    float: right;
+}
+
+.checkedAverageStar{
+    color: gold;
+}
