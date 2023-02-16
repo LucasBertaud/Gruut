@@ -164,22 +164,6 @@ class Cart
         return $quantity;
     }
 
-    public function getFullPaginated($page)
-    {
-        
-
-        $session = $this->request->getSession();
-        $data = $session->get('cart', []);
-        $dataCart = [];
-        if ($data) {
-            foreach ($data as $id => $quantity) {
-                $product = $this->entityManager->getRepository(Product::class)->findOneById($id);
-                $dataCart[] = [
-                    'product' => $product,
-                    'quantity' => $quantity,                    
-                ];                
-            }
-    }
 
     }
 }

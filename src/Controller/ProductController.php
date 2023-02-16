@@ -43,8 +43,13 @@ class ProductController extends AbstractController
             }
         }
         $rateOfProduct = null;
+        $generalRate = null;
         if($rates !== 0){
-            $rateOfProduct = $rates / $iteration;
+            $rateOfProduct = ceil(($rates / $iteration));
+            $rateOfProduct = $product->setNote($rateOfProduct);
+            $this->entityManager->persist($rateOfProduct);
+            $this->entityManager->flush();
+            $generalRate = $product->getNote();
         }
         $ratings = new Ratings;
         $user = $this->getUser();
@@ -80,7 +85,7 @@ class ProductController extends AbstractController
             'allRatings' => $allRatings,
             'commented' => $commented,
             "productUserBuy" => $productUserBuy,
-            "rateOfProduct" => $rateOfProduct
+            "rateOfProduct" => $generalRate
         ]);
     }
    
@@ -106,6 +111,7 @@ class ProductController extends AbstractController
            if($rates !== 0){
         $rateOfProduct = $rates / $iteration;
     }
+    $generalRate = $productFind[0]->getNote();
            $ordersByUser = $orderRepository->findByUserId($id);
         foreach ($ordersByUser as $orderByUser) {
             $id = $orderByUser->getId();
@@ -135,7 +141,7 @@ class ProductController extends AbstractController
             "formModify" => $formModify->createView(),
             "productUserBuy" => $productUserBuy,
             'allRatings' => $allRatings,
-            "rateOfProduct" => $rateOfProduct
+            "rateOfProduct" => $generalRate
        ]);
     }
 

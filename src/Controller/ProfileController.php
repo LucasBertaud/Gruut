@@ -207,7 +207,7 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/suppression-de-son-compte', name: 'delete_account')]
-    public function delete_account(Request $request, UserInterface $user, UserRepository $userRepository, MailerInterface $mailer): Response
+    public function delete_account(Request $request, UserInterface $user, UserRepository $userRepository, MailerInterface $mailer, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
         $passwordIsVerif = false;
@@ -255,7 +255,42 @@ class ProfileController extends AbstractController
         if($request->getRequestUri() == "/profil/suppression-de-son-compte?resetSession=1"){
            $request->getSession()->remove("email_sent_");
         }
-        return $this->render("profile/delete.html.twig", ["user" => $user, "passwordVerif" => $form->createView(), "passwordIsVerif" => $passwordIsVerif]);
+
+        $exitDelay = null;
+        $alert = null;
+        $secondForm = $this->createForm(ChangePasswordConnectedFormType::class);
+        $secondForm->handleRequest($request);
+
+        if ($secondForm->isSubmitted()) {
+
+            $oldPassword = $secondForm->get('oldPassword')->getData();
+            if ($secondForm->isSubmitted() && password_verify($oldPassword, $user->getPassword())) {
+                if ($secondForm->isSubmitted() && $secondForm->isValid()) {
+                    $alert = "Votre mot de passe a bien été modifié, vous allez être redirigé vers votre profil.";
+                    $exitDelay = true;
+                    $encodedPassword = $passwordHasher->hashPassword(
+                        $user,
+                        $secondForm->get('plainPassword')->getData()
+                    );
+
+                    $user->setPassword($encodedPassword);
+                    $this->entityManager->flush();
+                }
+            } else if ($secondForm->isSubmitted() && !password_verify($oldPassword, $user->getPassword())) {
+                $alert = "Erreur de confirmation de votre mot de passe actuel";
+            }
+        }
+    
+
+        return $this->render("profile/delete.html.twig", [
+            "user" => $user,
+            "passwordVerif" => $form->createView(), 
+            "passwordIsVerif" => $passwordIsVerif,
+            'resetForm' => $secondForm->createView(),
+            'alert' => $alert,
+            'exitDelay' => $exitDelay
+
+            ]);
     }
     #[Route('/suppression-de-son-compte/supprimer', name: 'delete_account_erase')]
     public function delete_account_erase(Request $request, SessionInterface $session, TokenStorageInterface $tokenStorage, UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo): Response

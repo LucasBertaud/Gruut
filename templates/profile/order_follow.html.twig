@@ -101,121 +101,6 @@
 
 
 	</style>
-	{# <div class="row">
-		<div class="col-md-3 text-center" style="background-color: #EDEDED; border-right: 2px solid #898989">
-			<div class="left-profile-container">
-				<img src="{{ asset("assets/images/profil_img.png") }}" alt="">
-				<h1 class="profileName">{{user.firstname}}
-					{{user.lastname}}</h1>
-			</div>
-			<h3 class="profileDiv">Compte</h3>
-			<br>
-			<div class="my-profile btn btn-block center-block" style="background: #F4F8FF; width: 20vw;height: 64px; line-height: 8vh; ">
-				<a href="{{path('profile_index')}}" class="">
-					<i class="fa-regular fa-id-badge" style=" margin-right:1vw;"></i>Votre profil
-				</a>
-			</div>
-			<br>
-			<div class="my-adress btn btn-block center-block" style="background: #F4F8FF;  width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('address_recap')}}">
-					<i class="fa-solid fa-box" style=" margin-right:1vw;"></i>Vos adresses</a>
-			</div>
-			<br>
-			<div class="my-data btn btn-block center-block" style="background: #F4F8FF;  width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('profile_data')}}">
-					<i class="fa-solid fa-database" style=" margin-right:1vw;"></i>Vos données</a>
-			</div>
-			<div class="my-data btn btn-block center-block" style="background: #F4F8FF; margin-bottom:5vh; width: 20vw; height: 64px; line-height: 8vh;">
-					<a href="{{path('profile_delete_account')}}?resetSession={{true}}">
-
-					<i class="fa-solid fa-trash" style=" margin-right:1vw;"></i>Supprimer son compte</a>
-
-			</div>
-
-
-			<h3 class="profileDiv">Achats</h3>
-			<div class="my-order btn btn-block center-block" style="background: #F4F8FF; width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('profile_order_follow')}}">
-					<i class="fa-solid fa-basket-shopping" style=" margin-right:1vw;"></i>Commandes et suivis
-				</a>
-			</div>
-			<div class="bill btn btn-block center-block" style="background: #F4F8FF; margin-bottom:5vh;  width: 20vw;height: 64px; line-height: 8vh;">
-				<a href="{{path('profile_bill')}}">
-					<i class="fa-solid fa-file-invoice" style=" margin-right:1vw;"></i>
-					Factures
-				</a>
-			</div>
-			<div class="profileDiv">
-				<div class="log-out btn btn-block center-block" style="background: #F4F8FF; margin-bottom:5vh;  margin-top:3vh;  width: 20vw;height: 64px; line-height: 8vh;">
-
-					<a href="{{path('app_logout')}}">
-						<i class="fa-solid fa-power-off" style=" margin-right:1vw;"></i>
-						Se déconnecter</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-9 text-center">
-			<h1 style="margin-bottom: 5vh;">Vos commandes</h1>
-{% if orderDetails is empty %}
-<hr>
-<p>Vous n'avez pas encore passé de commande.</p>
-{% endif %}
-
-			
-			{% for orderDetail in orderDetails %}
-			<div class="card" style="height: 350px; margin:1vw; float:left;">
-				{% set productArray = [] %}
-				{% set total = 0 %}
-				{% for product in orderDetail %}
-				{% if product.myorder.id not in productArray %}
-				<h3>Commande n°{{product.myorder.id}}</h3>
-					{% set productArray = productArray|merge([product.myorder.id]) %}
-				{% endif %}
-				{% endfor %}
-				<div class="col-md-6">
-					<h4>Identifiant:</h4>
-							{% set identityArray = [] %}
-					{% for identity in orderDetail %}
-							{% set identitySplit = identity.myorder.delivery|split('<br>') %}
-							{% if identitySplit.0 not in identityArray %}
-							{{identitySplit.0}} - {{identitySplit.1}} <br>
-							{{identitySplit.3}} <br>
-							{{identitySplit.4}} - {{identitySplit.5}} - {{identitySplit.6}} <br>
-							{{identitySplit.2}} <br>
-							<h4> Référence de commande: </h4>  <p style="text-decoration: underline;">{{identity.myorder.reference}} </p>
-							<h4> Transporteur: </h4> <p style="font-style: italic;">{{identity.myorder.carriername}}</p>
-							
-							{% set identityArray = identityArray|merge([identitySplit.0]) %}
-							{% endif %}
-						
-					{% endfor %}
-				</div>
-				<div class="col-md-6">
-					<h4>Produit</h4>
-				 {% set TTCArray = [] %}
-								{% set total = 0 %}
-								{% set totalTTC = 0 %}
-								{% for product in orderDetail %} 
-										{{ product.product }} x {{ product.quantity }} =
-										{{ (product.price * product.quantity / 100)|number_format(2, ',','.') }} € <br>
-									{% set total = total + product.price %}
-									
-									{% endfor %}
-									
-									<h3>Total: </h3>{{ (total /100)|number_format(2, ',','.')}} € <br>
-									{% set totalTTC = totalTTC + total + orderDetail[0].myorder.carrierprice %}
-									<h3>Total TTC: </h3>{{ (totalTTC /100)|number_format(2, ',','.')}} €
-				</div>
-			</div>
-			<hr>
-			{% endfor %}
-
-		</div>
-
-
-	</div>
-</div> #}
 
 	<div class="container emp-profile" style="margin-top:0vh;">
             <form method="post">
@@ -290,6 +175,7 @@
 																				{% set identityArray = [] %}
 																		{% for identity in orderDetail %}
 																				{% set identitySplit = identity.myorder.delivery|split('<br>') %}
+																				{% set state = identity.myorder.state %}
 																				{% if identitySplit.0 not in identityArray %}
 																				{{identitySplit.0}} - {{identitySplit.1}} <br>
 																				{{identitySplit.3}} <br>
@@ -297,8 +183,14 @@
 																				{{identitySplit.2}} <br>
 																				<h4> Référence de commande: </h4>  <p style="text-decoration: underline;">{{identity.myorder.reference}} </p>
 																				<h4> Transporteur: </h4> <p style="font-style: italic;">{{identity.myorder.carriername}}</p>
-																				<h4>Statut:</h4><p style="font-style: italic;">{{identity.myorder.state}}</p>
+																				<h4>Statut:</h4><p style="font-style: italic;">
+																					{% if state == 0 %} Non payée {% endif %}
+																					{% if state == 1 %} Payée {% endif %}
+																					{% if state == 2 %} Préparation en cours {% endif %}
+																					{% if state == 3 %} Livraison en cours {% endif %}
+																				</p>
 																				{% set identityArray = identityArray|merge([identitySplit.0]) %}
+
 																				{% endif %}
 																			
 																		{% endfor %}

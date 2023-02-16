@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Categories;
 use App\Entity\Product;
+use App\Entity\Ratings;
 use App\Form\QuantityType;
 use App\Repository\CategoriesRepository;
 use App\Repository\ProductRepository;
+use App\Repository\RatingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +36,23 @@ class CategoryController extends AbstractController
         ]);
     }
     #[Route('/{slug}', name: 'list')]
-    public function list (Categories $categories, Request $request, SessionInterface $session )
+    public function list (Categories $categories, Request $request, SessionInterface $session, ProductRepository $products  )
     {
         
+        $allRatings = [];
+        $allNotes = [];
+        foreach ($categories->getProducts() as $product) {
+            array_push($allRatings, $product);
+        }
+          foreach($allRatings as $allRating){
+            array_push($allNotes, $allRating->getNote());
+          }
+        // dd($allRatings[0]->getProduct());
         $session->remove('inputOfValue');
         $form = $this->createForm(QuantityType::class);
         $form->handleRequest($request);
         return $this->render('product/index.html.twig', [
+            "allNotes" => $allNotes,
             "form" => $form->createView(),
             "categories" => $categories,
         ]);

@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Accueil{% endblock %}
+{% block css %}
+	<link rel="stylesheet" href="{{asset('assets/css/profile.css')}}">
+{% endblock %}
 
     {% block content %}
 	<header id="head">
@@ -19,6 +22,10 @@
 			justify-content: center;
 			align-items: center;
 		}
+
+		.checkedStar{
+    color: gold;
+}
 	</style>
 
 	<!-- Intro -->
@@ -36,7 +43,7 @@
 		<div class="container">
 					<h3 class="text-center thin">Nos meilleurs produits</h3>		
 					<div class="container">
-						<div class="row" style="flex-wrap: wrap; justify-content: center; display:flex;">
+						<div class="row text-center" style="flex-wrap: wrap; justify-content: center; display:flex;">
 								{% for product in products %}
 									{% include 'product/single.html.twig'%}
 								{% endfor %}
@@ -96,6 +103,32 @@
 	{% block script %}
 	
 	<script>
+
+var rateStars = document.querySelectorAll(".rateStar"); 
+let mainArray = [];
+let secondArray = [];
+
+for (let i = 0; i < rateStars.length; i += 5) {
+  let sliceArray = Array.from(rateStars).slice(i, i + 5);
+  mainArray.push(sliceArray);
+}
+
+{% for product in products %}
+{% set note = product.note %}
+var note = {{note|json_encode|raw}};
+if(note != null){
+secondArray.push(note);
+}
+{% endfor %}
+
+mainArray.forEach(function(oneArray, i){
+	for(index = 0; index < secondArray[i]; index++){
+		oneArray[index].classList.add("checkedStar")
+	}
+})
+
+{# --------------------------------------------------------------------- #}
+
 	let inputsQuantity = document.querySelectorAll(".quantityCart");
 let hrefs = document.querySelectorAll(".click");
 let inputOfValue = 1;

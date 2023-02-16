@@ -50,6 +50,9 @@ class Product
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Ratings::class)]
     private Collection $ratings;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $note = null;
       
 
     public function __construct()
@@ -234,6 +237,18 @@ class Product
                 $rating->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }
