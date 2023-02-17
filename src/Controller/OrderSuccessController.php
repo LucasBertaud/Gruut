@@ -43,10 +43,12 @@ class OrderSuccessController extends AbstractController
         $id = $user->getId();
         $orderId = $order->getId();
         $orderDelivery = $order->getDelivery();
+        // Création d'un array à partir des <br>
         $deliveryArray = explode("<br>", $orderDelivery);      
         $productItems = $order->getOrderDetails()->getValues();
         $carrierPrice = $order->getCarrierPrice() / 100;
         $total = null;
+        // la boucle sert à connaître le total de tous les produits récupérés 
         foreach ($productItems as $product) {
             $total += ($product->getPrice() * $product->getQuantity()) / 100;
         }
@@ -65,9 +67,10 @@ class OrderSuccessController extends AbstractController
 
         if($order->getState() == 0){
             $cart->deleteAll();
+            // Permet de passer le statut de la commande a payé
             $order->setState(1);
                  
-            
+            // envoie du mail après confirmation de paiement
             $email = (new TemplatedEmail())
             ->from(new MimeAddress('gruut.company1@gmail.com', 'Gruut'))
             ->to($user->getEmail())
@@ -79,7 +82,7 @@ class OrderSuccessController extends AbstractController
         $mailer->send($email);
 
         
-
+            // pour créer le PDF, on lui passe la vue twig bill.html.twig et dans l'array on peut y intégrer des variables
         $html = $this->renderView('profile/bill.html.twig', array(
             'user'  => $user,
             'orderDelivery' => $deliveryArray,
@@ -89,9 +92,12 @@ class OrderSuccessController extends AbstractController
             'total' => $total,
             'totalCarrier' => $totalCarrier,
         ));
+        // sha1 = hashage, uniqid = génère un ID
         $namepdf = sha1(uniqid());
         $pathpdf = "assets/pdf/$namepdf";
+        // ici on génère le PDF via la variable html et on lui passe son chemin via la variable pathpdf
         $knpSnappyPdf->generateFromHtml($html, $pathpdf);
+        // ici on mets dans la BDD la date de la création du PDF et le PDF
         $order->setBill($pathpdf);
         $order->setBillingDate($date);
         $entityManager->flush();

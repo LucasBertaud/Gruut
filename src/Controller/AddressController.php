@@ -24,19 +24,21 @@ class AddressController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-
+    // Création du formulaire d'adresse
     #[Route('/formulaire', name: 'index')]
     public function index(Request $request): Response
     {
         $user = $this->getUser();
+        
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $address->setUserId($this->getUser());
+            // stockage de l'utilisateur dans le champ user_id
+            $address->setUserId($this->getUser());            
             $this->entityManager->persist($address);
             $this->entityManager->flush();
-            return $this->redirectToRoute('address_recap');
+            return $this->redirectToRoute('profile_index');
         }
         return $this->render('address/index.html.twig', ['addressForm' => $form->createView(), 'user' => $user]);
     }
@@ -57,13 +59,14 @@ class AddressController extends AbstractController
     public function modify(AddressRepository $addressRepository, $id, Request $request): Response
     {
         $user = $this->getUser();
+        // récupération des données de l'adresse de l'utilisateur 
         $address = $addressRepository->findOneById($id);
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($address);
             $this->entityManager->flush();
-            return $this->redirectToRoute('address_recap');
+            return $this->redirectToRoute('profile_index');
         }
         return $this->render('address/index.html.twig', ['addressForm' => $form->createView(), 'user' => $user]);
     }
@@ -76,6 +79,6 @@ class AddressController extends AbstractController
             $this->entityManager->remove($address);
             $this->entityManager->flush();
         }
-        return $this->redirectToRoute('address_recap');
+        return $this->redirectToRoute('profile_index');
     }
 }

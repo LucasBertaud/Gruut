@@ -1,6 +1,7 @@
 twig:
   default_path: "%kernel.project_dir%/templates"
   form_themes: ["bootstrap_4_layout.html.twig"]
+  # pour récupérer dans tous les twig une classe, on écrit, globals: puis on y créer une variable (le nom n'a pas d'importance) à l'intérieur de la variable on y injecte la classe, exemple ici : "@App\Classe\Cart", plus tard dans n'importe quel twig, il suffira d'appeler la variable comme ceci : {{quantity.getQuantity()}}
   globals:
     quantity: '@App\Classe\Cart'
 when@test:

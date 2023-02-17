@@ -27,7 +27,7 @@ class CategoryController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-
+    // Récupération des catégories
     #[Route('/', name: 'index')]
     public function index (CategoriesRepository $categoriesRepository)
     {
@@ -35,20 +35,24 @@ class CategoryController extends AbstractController
             'categories' => $categoriesRepository->findAll()
         ]);
     }
+
     #[Route('/{slug}', name: 'list')]
     public function list (Categories $categories, Request $request, SessionInterface $session, ProductRepository $products  )
     {
         
         $allRatings = [];
         $allNotes = [];
-        foreach ($categories->getProducts() as $product) {
+        // On insére dans le tableau $allRatings l'ensemble des produits de la catégorie
+        foreach ($categories->getProducts() as $product) {          
             array_push($allRatings, $product);
         }
-          foreach($allRatings as $allRating){
+        // On récupére toutes la note générale de chaques produits
+          foreach($product as $allRating){           
             array_push($allNotes, $allRating->getNote());
           }
-        // dd($allRatings[0]->getProduct());
-        $session->remove('inputOfValue');
+        
+        
+         $session->remove('inputOfValue');
         $form = $this->createForm(QuantityType::class);
         $form->handleRequest($request);
         return $this->render('product/index.html.twig', [

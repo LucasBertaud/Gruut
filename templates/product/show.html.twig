@@ -103,24 +103,32 @@
 {% block script %}
 
 	<script>
+	// sélectionne la note générale
 let starsAverage = document.querySelectorAll(".rateAverageStar");
 {% set rateAverage = rateOfProduct %}
+// on implémente une variable venant de twig avec un json_encode
 var rateAverage = {{rateAverage|json_encode|raw}};
-console.log(rateAverage)
 for(i = 0; i < rateAverage; i++){
+	// la boucle permet de coloré les étoiles, je fais une boucle sur RateAverage qui me renvoie la note générale, par exemple: si rateAverage = 4, l'index de la boucle renverra, (0,1,2,3) donc à chacun des éléments du tableau qui comprends les étoiles, il appliquera la classe CSS. (starsAverage[0], starsAverage[1], etc...)
 starsAverage[i].classList.add("checkedAverageStar")
 }
 
 {# ---------------------------------------------------------------------- #}
 
+// ici c'est les étoiles du formulaire
 let inputs = document.querySelectorAll(".form-check-input")
 let fiveStar = 5;
+
 inputs.forEach(function(input, i){
 	input.addEventListener("change", function(){
+		// ici on sélectionne chaque inputs, pour supprimer la classe "checkedStar" pour éviter d'avoir encore des étoiles jaunes, on le fait avant de rajouter des étoiles.
 		for(index = 0; index < fiveStar; index++){
 		inputs[index].classList.remove("checkedStar")
 		}
+
+		// ici on colorise l'étoile sur laquelle on a cliqué.
 		input.classList.add("checkedStar")
+		// ici on boucle sur le nombre d'itération des inputs pour récupérer toutes les étoiles avant celle sélectionné.
 		for(index = 0; index < i; index++){
 			inputs[index].classList.add("checkedStar")
 		}
@@ -152,32 +160,10 @@ mainArray.forEach(function(oneArray, i){
 })
 
 {# ---------------------------------------------------------------------- #}
-
-		var click1 = document.getElementsByClassName('click');
-var nbPanier = document.querySelector('.notify-badge');
-var cardButtons = document.querySelectorAll('.card-button');
-
-
-for (var i = 0; i < click1.length; i++) {
-
-click1[i].addEventListener("click", () => {
-nbPanier.classList.add("animation");
-setTimeout(function () {
-nbPanier.classList.remove("animation");
-}, 500);
-})
-}
-
-cardButtons.forEach(function (cardButton) {
-cardButton.addEventListener("click", () => {
-cardButton.classList.add("animationcard");
-})
-})
-
 	let inputsQuantity = document.querySelectorAll(".quantityCartShow");
 let hrefs = document.querySelectorAll(".click");
 let inputOfValue = 1;
-
+// map = forEach mais renvoie un tableau de plusieurs valeurs.
 arrayInputs = Array.from(inputsQuantity).map(function (inputQuantity) {
 	return inputQuantity;
 });
@@ -188,7 +174,9 @@ arrayInputs.forEach(function (input, index) {
 		if(inputValue > 100) {
 			inputValue = 0
 		}
+		// au lien que tu cliques, tu lui récupère son chemin.
 		cartHref = href.href;
+		// tu initialises l'ajax pour pouvoir envoyer les données de l'input dans le controller add.
 		$.ajax({
 			type: "POST",
 			url: cartHref,

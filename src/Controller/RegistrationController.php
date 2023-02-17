@@ -30,6 +30,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $session->invalidate();
+            // on créer un token pour l'envoyer dans la session utilisateur et on l'enverra aussi dans le MAIL
             $token = bin2hex(random_bytes(32));
             $user->setPassword(
                 $userPasswordHasher->hashPassword(

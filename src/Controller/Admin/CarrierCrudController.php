@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 
+// Dtails des transporteurs
 
 class CarrierCrudController extends AbstractCrudController
 {

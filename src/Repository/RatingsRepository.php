@@ -52,13 +52,24 @@ class RatingsRepository extends ServiceEntityRepository
        ;
    }
 
-//    public function findOneBySomeField($value): ?Ratings
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function findByUserId($id): array
+   {
+       return $this->createQueryBuilder('r')
+           ->andWhere('r.user = :val')
+           ->setParameter('val', $id)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
+   public function delete($id) 
+    {
+
+       return  $this->createQueryBuilder('a')
+            ->delete(Ratings::class, 'a')
+            ->Where('a.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->execute();
+    }
 }

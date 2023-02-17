@@ -54,62 +54,49 @@
 var rateStars = document.querySelectorAll(".rateStar"); 
 let mainArray = [];
 let secondArray = [];
-
+// cette boucle sert à couper le tableau en plusieurs partie de 5 éléments(étoile).
 for (let i = 0; i < rateStars.length; i += 5) {
+	// ici on fait un Array.from car le tableau de rateStars est considéré comme un NodeList, on le slice(tranche) après 5 éléments récupéré.
   let sliceArray = Array.from(rateStars).slice(i, i + 5);
+
+	// ici on push(pousse) les données récupérés dans sliceArray dans le tableau mainArray.
   mainArray.push(sliceArray);
 }
 
 {% for product in categories.products %}
+// on peut initialiser des paramètres twig dans le javascript, même les boucles twig fonctionne en JS.
 {% set note = product.note %}
+// ici je set une variable note en TWIG puis je la récupère, avec un json_encode pour que ça soit interpréter par JS
 var note = {{note|json_encode|raw}};
+
 if(note != null){
 secondArray.push(note);
 }
 {% endfor %}
 
 mainArray.forEach(function(oneArray, i){
+	// cette boucle permet de créer la couleur des étoiles.
 	for(index = 0; index < secondArray[i]; index++){
 		oneArray[index].classList.add("checkedStar")
 	}
 })
 
 {# --------------------------------------------------------------------- #}
- 
-	var click1 = document.getElementsByClassName('click');
-	var nbPanier = document.querySelector('.notify-badge');
-	var cardButtons = document.querySelectorAll('.card-button');
-
-
-for(var i=0; i<click1.length; i++){
-
-	click1[i].addEventListener ("click", () => {
-			nbPanier.classList.add("animation");
-			
-	})
-}
-
-cardButtons.forEach(function(cardButton){
-cardButton.addEventListener("click", () => {
-	cardButton.classList.add("animationcard");
-} )
-	} 	 
-)
-
-{# --------------------------------------------------------------------- #}
 
 let inputsQuantity = document.querySelectorAll(".quantityCart");
 let hrefs = document.querySelectorAll(".click");
 let inputOfValue = 1;
-
 inputsQuantity.forEach(function (input, index) {
-	var href = hrefs[index];
+	// pour chaque inputs on va attribuer un lien <a href> lui correspondant. 
+	let href = hrefs[index];
 	href.addEventListener("click", function(){
 		inputValue = input.value
 		if(inputValue > 100) {
 			inputValue = 0
 		}
+		// au lien que tu cliques, tu lui récupère son chemin.
 		cartHref = href.href;
+		// tu initialises l'ajax pour pouvoir envoyer les données de l'input dans le controller add.
 		$.ajax({
 			type: "POST",
 			url: cartHref,

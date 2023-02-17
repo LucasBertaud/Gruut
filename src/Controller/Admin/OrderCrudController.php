@@ -45,6 +45,9 @@ class OrderCrudController extends AbstractCrudController
         ->showEntityActionsInlined();
     }
 
+
+    // Création des boutons d'action dans le Show du Dashboard
+
     public function configureActions(Actions $actions): Actions
     {
         $commandeComposants = Action::new('commandeComposants','Composants pour la commande')->linkToCrudAction('commandeComposants');
@@ -65,11 +68,13 @@ class OrderCrudController extends AbstractCrudController
 
     public function updatePreparation(AdminContext $context)
     {
-       $order = $context->getEntity()->getInstance();
-       $order->setState(2);
+       $order = $context->getEntity()->getInstance(); // récupération de l'objet order
+       $order->setState(2); // modification de le champ State dans la BDD 
        $this->entityManager->flush();
 
-       $url = $this->adminUrlGenerator
+       // Génération de l'url de redirection
+       
+       $url = $this->adminUrlGenerator 
         ->setController(OrderCrudController::class)
         ->setAction('index')
         ->generateUrl();
@@ -92,10 +97,12 @@ class OrderCrudController extends AbstractCrudController
     }
 
    public function commandeComposants(AdminContext $admin,ProductRepository $productRepository, Request $request){
+        
         $order = $admin->getEntity()->getInstance();
         $productOrder = [];
-       
-        foreach($order->getOrderDetails()->getValues() as $product){            
+        // Récupération des valeurs présentes dans le orderDetails 
+        foreach($order->getOrderDetails()->getValues() as $product){    
+            //Récupération du nom du produit et de sa quantité       
         $productOrder += [            
              $product->getProduct() => $product->getQuantity()
             ];              
@@ -104,11 +111,14 @@ class OrderCrudController extends AbstractCrudController
      
       $componantsProducts = [];
       foreach($productOrder as $nameProduct => $item){
+
         $product = $productRepository->findOneByName($nameProduct);
 
          $componantsProducts [] =  [
+            // récupération de la quantité (item) et des composants du produit
              $item => $product->getComponants()->getValues()];         
         }
+        
         $referer = $request->headers->get('referer');    
       return $this->render('admin/composantsCommande.html.twig',compact('productOrder','order','referer','componantsProducts'));
     }

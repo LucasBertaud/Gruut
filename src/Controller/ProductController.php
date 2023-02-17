@@ -35,16 +35,20 @@ class ProductController extends AbstractController
         $id = $product->getId();
         $slug = $product->getSlug();
         $allRatings = $ratingsRepository->findByProduct($id);
+        // la boucle sert à connaître chaque notes de chaque utilisateur sur le produit pour plus tard faire la note général
         foreach($allRatings as $allRating){
             $iteration ++;
             $rates += $allRating->getRating();
             if($allRating->getUser() == $user){
+                // commented permet de vérifier si l'utilisateur à commenté le produit
                 $commented = true;
             }
         }
         $rateOfProduct = null;
         $generalRate = null;
         if($rates !== 0){
+            // ici on initialise la variable de la note générale en prenant la moyenne des notes des utilisateurs en divisant par le nombres d'utilisateurs qui ont commentés.
+            // le ceil permet d'arrondir
             $rateOfProduct = ceil(($rates / $iteration));
             $rateOfProduct = $product->setNote($rateOfProduct);
             $this->entityManager->persist($rateOfProduct);
@@ -60,6 +64,7 @@ class ProductController extends AbstractController
             $ordersDetails = $orderDetailsRepository->findByOrderId($id);
             foreach($ordersDetails as $orderDetail){
                 if($orderDetail->getProduct() == $product->getName()){
+                    // tout ça permet de voir si l'utilisateur a bien acheté le produit et il pourra commenter le produit
                     $productUserBuy = true;
                 }
             }

@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <a href="{{path("profile_modify", {'id' : id})}}"><input type="bmit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/></a>
+                        <a href="{{path("profile_delete_account", {'id' : id})}}"><input type="bmit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/></a>
                     </div>
                 </div>
                 <div class="responsive row">
@@ -188,8 +188,6 @@ var about = document.querySelector('#home-tab');
 var address = document.querySelector('#profile-tab');
 let value = 1;
 
-
-
 oneach.forEach(function(one){
 	$url = one.href;
 	one.addEventListener("click", function(){
@@ -199,7 +197,6 @@ if(one.href == "http://5.135.101.252:8000/profil/#home"){
     else{
         value = 2
     }
-    console.log(value)
 		$.ajax({
 			url: $url,
 			type:'POST',

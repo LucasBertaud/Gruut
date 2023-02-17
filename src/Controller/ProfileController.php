@@ -9,6 +9,7 @@ use App\Form\PasswordVerificationType;
 use App\Repository\AddressRepository;
 use App\Repository\OrderDetailsRepository;
 use App\Repository\OrderRepository;
+use App\Repository\RatingsRepository;
 use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +56,7 @@ class ProfileController extends AbstractController
         $address = $addressRepository->findByUserId($id);
         $form = $this->createForm(PasswordVerificationType::class);
         $form->handleRequest($request);
-
+        // ici c'est pour télécharger les données utilisateurs, mais avant on demande un passwordVerif
         if ($form->isSubmitted()) {
             $passwordverif = $form->get('passwordverif')->getData();
             if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
@@ -79,124 +80,40 @@ class ProfileController extends AbstractController
         ]); 
     }
 
-    #[Route('/modifier-le-mot-de-passe/{id}', name: 'change_password')]
-    public function reset(Request $request, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $exitDelay = null;
-        $alert = null;
-        $user = $this->getUser();
-        $form = $this->createForm(ChangePasswordConnectedFormType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-
-            $oldPassword = $form->get('oldPassword')->getData();
-            if ($form->isSubmitted() && password_verify($oldPassword, $user->getPassword())) {
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $alert = "Votre mot de passe a bien été modifié, vous allez être redirigé vers votre profil.";
-                    $exitDelay = true;
-                    $encodedPassword = $passwordHasher->hashPassword(
-                        $user,
-                        $form->get('plainPassword')->getData()
-                    );
-
-                    $user->setPassword($encodedPassword);
-                    $this->entityManager->flush();
-                }
-            } else if ($form->isSubmitted() && !password_verify($oldPassword, $user->getPassword())) {
-                $alert = "Erreur de confirmation de votre mot de passe actuel";
-            }
-        }
-
-
-
-        return $this->render('profile/change_pass.html.twig', [
-            'resetForm' => $form->createView(),
-            'user' => $user,
-            'alert' => $alert,
-            'exitDelay' => $exitDelay,
-            'user' => $user
-
-        ]);
-    }
-
-    #[Route('/modifier-le-profil/{id}', name: 'modify')]
-    public function modify(Request $request, $id, UserInterface $user): Response
-    {
-        $alert = null;
-        $exitDelay = null;
-        $user = $this->getUser();
-        $id = $this->getUser()->getId();
-        $form = $this->createForm(ChangeProfileType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $alert = "Votre profil a bien été modifié, vous allez être redirigé vers votre profil.";
-            $exitDelay = true;
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-        }
-        return $this->render('profile/change_profile.html.twig', [
-            'profileForm' => $form->createView(),
-            'id' => $id,
-            'alert' => $alert,
-            'exitDelay' => $exitDelay,
-            'user' => $user
-        ]);
-    }
-    #[Route('/vos-donnees/', name: 'data')]
-    public function data(Request $request, UserInterface $user): Response
-    {
-        $user = $this->getUser();
-        $form = $this->createForm(PasswordVerificationType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            $passwordverif = $form->get('passwordverif')->getData();
-            if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
-                if ($form->isSubmitted() && $form->isValid()) {
-                    return $this->render('profile/data2.html.twig', [
-                        "user" => $user,
-                    ]);
-                }
-            }
-        }
-        return $this->render('profile/data.html.twig', [
-            "user" => $user,
-            'passwordVerif' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/vos-données/télécharger/JSON', name: 'data_JSON_download')]
+     #[Route('/vos-données/télécharger/JSON', name: 'data_JSON_download')]
     public function data_JSON_download(Request $request, UserInterface $user, UserRepository $userRepository): Response
     {
         $user = $this->getUser();
         $id = $user->getId();
         $data = $userRepository->findById($id)[0];
-
+        // on créait un sérializer qui permet d'encoder en JSON
         $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+        // ici on lui demande de sérializer notre data en JSON
         $jsonData = $serializer->serialize($data, 'json', [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'addresses', 'orders', 'password', 'id', 'userIdentifier']
+            // on supprime certains attributs qui peuvent poser problèmes, par exemple : les clefs étrangères posent des problèmes de boucles("a circular reference has been detected")
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'fullName' ,'token' ,'ratings' , 'addresses', 'orders', 'password', 'id', 'userIdentifier']
         ]);
         $dataJson = json_decode($jsonData);
 
-
+        // ici on va créer notre réponse en  JSON, on lui passe json_pretty_print pour que ça soit "propre"
         $response = new JsonResponse(json_encode($dataJson, JSON_PRETTY_PRINT));
         $response->headers->set('Content-Type', 'application/json');
+        // ici on peut choisir le nom du fichier.
         $response->headers->set('Content-Disposition', 'attachment;filename="user_' . $id . '.json"');
-
         return $response;
     }
 
     #[Route('/vos-données/télécharger/YAML', name: 'data_YAML_download')]
     public function data_YAML_download(Request $request, UserInterface $user, UserRepository $userRepository): Response
     {
+         // se référer aux commentaires JSON
         $user = $this->getUser();
         $id = $user->getId();
         $data = $userRepository->findById($id)[0];
 
         $serializer = new Serializer([new ObjectNormalizer()], [new YamlEncoder()]);
         $yamlData = $serializer->serialize($data, 'yaml', [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'addresses', 'orders', 'password', 'id', 'userIdentifier']
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'fullName' ,'token' ,'ratings' , 'addresses', 'orders', 'password', 'id', 'userIdentifier']
         ]);
 
         $response = new Response($yamlData);
@@ -209,19 +126,24 @@ class ProfileController extends AbstractController
     #[Route('/suppression-de-son-compte', name: 'delete_account')]
     public function delete_account(Request $request, UserInterface $user, UserRepository $userRepository, MailerInterface $mailer, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $alert = null;
+        $exitDelay = null;
+        $secondForm = $this->createForm(ChangePasswordConnectedFormType::class);
+        $secondForm->handleRequest($request);
         $user = $this->getUser();
         $passwordIsVerif = false;
         $id = $user->getId();
         $data = $userRepository->findById($id)[0];
         $form = $this->createForm(PasswordVerificationType::class);
         $form->handleRequest($request);
-
+        // $form = passwordverification pour la suppression de compte, tandis que $secondForm = ChangePassword pour changer le mdp
         if ($form->isSubmitted()) {
             
             $passwordverif = $form->get('passwordverif')->getData();
             if ($form->isSubmitted() && password_verify($passwordverif, $user->getPassword())) {
                 if ($form->isSubmitted() && $form->isValid()) {
                     $passwordIsVerif = true;
+                    // si il n'a pas dans session l'email envoyé, alors l'utilisateur peut reçevoir un mail
                     if (!$request->getSession()->get('email_sent_')) {
                     $token = bin2hex(random_bytes(32));
                     $user->setToken($token);
@@ -240,27 +162,30 @@ class ProfileController extends AbstractController
                     $request->getSession()->set('email_sent_' , true);
                     return $this->render('profile/delete.html.twig', [
                         "user" => $user,
-                        "passwordIsVerif" => $passwordIsVerif
+                        "passwordIsVerif" => $passwordIsVerif,
+                        "alert" => $alert,
+                        'resetForm' => $secondForm->createView(),
+                        'exitDelay' => $exitDelay,
                     ]);
                 }
                 else{
                         return $this->render('profile/delete.html.twig', [
                             "user" => $user,
-                            "passwordIsVerif" => $passwordIsVerif
+                            "passwordIsVerif" => $passwordIsVerif,
+                            "alert" => $alert,
+                            'resetForm' => $secondForm->createView(),
+                            'exitDelay' => $exitDelay,
                         ]);
                 }
             }
             }
         }
+        // si tu passes par "essayer de nouveau" ou par le lien "supprimer son compte" alors on supprime dans la session "email_sent" pour pouvoir renvoyer un nouveau mail
         if($request->getRequestUri() == "/profil/suppression-de-son-compte?resetSession=1"){
            $request->getSession()->remove("email_sent_");
         }
 
-        $exitDelay = null;
-        $alert = null;
-        $secondForm = $this->createForm(ChangePasswordConnectedFormType::class);
-        $secondForm->handleRequest($request);
-
+            // ici c'est le formulaire modifier le mot de passe
         if ($secondForm->isSubmitted()) {
 
             $oldPassword = $secondForm->get('oldPassword')->getData();
@@ -293,7 +218,7 @@ class ProfileController extends AbstractController
             ]);
     }
     #[Route('/suppression-de-son-compte/supprimer', name: 'delete_account_erase')]
-    public function delete_account_erase(Request $request, SessionInterface $session, TokenStorageInterface $tokenStorage, UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo): Response
+    public function delete_account_erase(Request $request, SessionInterface $session, TokenStorageInterface $tokenStorage, UserInterface $user, UserRepository $userRepository, AddressRepository $addressRepository, EntityManagerInterface $entity, ResetPasswordRequestRepository $resetrepo, RatingsRepository $ratingsRepository): Response
     {
 
         $user = $this->getUser();
@@ -301,6 +226,7 @@ class ProfileController extends AbstractController
         if ($fromEmail != null) {
         if ($fromEmail == $user->getToken()) {
             
+            // supprime toutes les données de la BDD correspond à l'utilisateur
             $id = $user->getId();
             $resetpass = $resetrepo->findByUserId($id);
             foreach ($resetpass as $reset) {
@@ -310,11 +236,15 @@ class ProfileController extends AbstractController
             foreach ($address as $test) {
                 $addressRepository->delete($test);
             }
+            $ratings = $ratingsRepository->findByUserId($id);
+            foreach ($ratings as $test) {
+                $ratingsRepository->delete($test);
+            }
             $entity->remove($user);
             $entity->flush();
-
             $tokenStorage->setToken(null);
             $user->setToken(null);
+            // dégage toutes les SESSIONS
             $session->invalidate();
 
             return $this->redirectToRoute("app_logout");
@@ -336,8 +266,8 @@ class ProfileController extends AbstractController
         $id = $user->getId();
         $order = $orderRepository->findByUserId($id);
         $orderid = [];
-        
         $orderDetails = [];
+        // ici on boucle sur les commandes, pour à la fin récupérer chacun des orderDetails.
         if(!$order == []){
             foreach($order as $singleorder){
                 $ordersid[] = $singleorder->getid();
@@ -349,29 +279,18 @@ class ProfileController extends AbstractController
         }
         $random = random_bytes(10);
         $bill = [];
+        // ici on récupère les factures
         foreach ($order as $orderBill) {
             $bill[] = [$orderBill->getBill(), $orderBill->getId()];
         }
 
         $bytes = (bin2hex($random));
 
-        return $this->render("profile/order_follow.html.twig", ["user" => $user, "orderDetails" =>$orderDetails, 'bills' => $bill, 'random' => $bytes]);
-    }
-
-    #[Route('/facture', name: 'bill')]
-    public function bill_page( UserInterface $user, OrderRepository $orderRepository): Response
-    {
-        $user = $this->getUser();
-        $random = random_bytes(10);
-        $id = $user->getId();
-        $order = $orderRepository->findByUserId($id);
-        $bill = [];
-        foreach ($order as $orderBill) {
-           $bill[] = [$orderBill->getBill(), $orderBill->getId()];
-        }
-        
-        $bytes = (bin2hex($random));
-        
-        return $this->render("profile/bill_page.html.twig", ["user" => $user, "id" => $id, 'bills' => $bill, 'random' => $bytes]);
+        return $this->render("profile/order_follow.html.twig", [
+        "user" => $user, 
+        "orderDetails" =>$orderDetails, 
+        'bills' => $bill, 
+        'random' => $bytes
+    ]);
     }
 }

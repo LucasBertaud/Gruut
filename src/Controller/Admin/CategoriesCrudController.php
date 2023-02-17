@@ -9,6 +9,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 
+// Détails des catégories
+
 class CategoriesCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

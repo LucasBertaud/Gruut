@@ -25,7 +25,7 @@ class OrderController extends AbstractController
     function __construct(private entityManagerInterface $entityManager){}        
     
     #[Route('/', name: 'index')]
-    public function index( RequestStack $test,Cart $cart, Request $request, PaginatorInterface $paginator): Response
+    public function index(Cart $cart, Request $request, PaginatorInterface $paginator): Response
     {   
         
         
@@ -35,7 +35,7 @@ class OrderController extends AbstractController
         }
 
         $data = $cart->getFull();
-
+        // Pagination des articles dans le récap (voir knp bundle paginator)
         $articles = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1), 
@@ -51,7 +51,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/commande/recapitulatif', name: 'recap', methods:'POST')]
-    public function add(Cart $cart, Request $request, PaginatorInterface $paginator,ProductRepository $productRepository): Response
+    public function add(Cart $cart, Request $request): Response
     {
         $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser()
@@ -100,6 +100,7 @@ class OrderController extends AbstractController
             $this->entityManager->flush();
 
             $stateStock= [];
+            // Récupération des stocks produits pour savoir si des produits seront en reliquats
             foreach($cart->getFull() as $product){
                 
                 $quantityStock = $product['product']->getStock();
@@ -107,7 +108,7 @@ class OrderController extends AbstractController
                 $quantityAfterBuy = $quantityStock - $quantityBuy;
             
                 if($quantityAfterBuy < 0){
-                    $stateStock += [
+                    $stateStock += [                       // Permet d'avoir un nombre toujours positif
                         $product['product']->getName() => abs($quantityAfterBuy)
                     ];
                 };                
